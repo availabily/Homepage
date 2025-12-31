@@ -50,7 +50,7 @@ const App: React.FC = () => {
         
         {/* SECTION 1: Manifesto / Philosophy */}
         <section className={`py-24 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12">
+          <div className={`grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-black/5'}`}>
             <div className="md:col-span-4">
               <FadeIn>
                 <h2 className={`text-xs font-semibold tracking-widest uppercase sticky top-32 transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -84,7 +84,7 @@ const App: React.FC = () => {
 
         {/* SECTION 2: Mission Statement */}
         <section className={`py-32 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-          <div className="max-w-4xl mx-auto text-center md:text-left">
+          <div className={`max-w-4xl mx-auto text-center md:text-left backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-black/5'}`}>
             <FadeIn>
               <p className={`text-3xl md:text-5xl font-normal tracking-tight leading-[1.15] transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
                 We build systems designed to move work forward on their own.
@@ -95,7 +95,7 @@ const App: React.FC = () => {
 
         {/* SECTION 3: Capabilities */}
         <section className={`py-24 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12">
+          <div className={`grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-black/5'}`}>
             <div className="md:col-span-4">
               <FadeIn>
                 <h2 className={`text-xs font-semibold tracking-widest uppercase sticky top-32 transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -128,7 +128,7 @@ const App: React.FC = () => {
 
         {/* Why This Matters */}
         <section className={`py-32 px-6 md:px-12 transition-colors duration-500 ${isDark ? 'bg-white/5' : 'bg-gray-50/50'}`}>
-          <div className="max-w-3xl mx-auto text-center">
+          <div className={`max-w-3xl mx-auto text-center backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-black/5'}`}>
             <div className="space-y-12">
               <FadeIn delay={0}>
                 <div className="space-y-2">
@@ -153,7 +153,7 @@ const App: React.FC = () => {
 
         {/* Who It's For */}
         <section className="py-24 px-6 md:px-12">
-          <div className="max-w-2xl mx-auto text-center">
+          <div className={`max-w-2xl mx-auto text-center backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-black/5'}`}>
             <FadeIn>
               <p className={`text-lg leading-relaxed font-light transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-800'}`}>
                 Insinuate is for operators and early adopters who understand where intelligent systems are heading — and want to be early.
@@ -164,7 +164,7 @@ const App: React.FC = () => {
 
         {/* Access / CTA Section */}
         <section id="access-section" className={`py-32 px-6 md:px-12 border-t flex flex-col items-center text-center transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-          <div className="w-full max-w-xl">
+          <div className={`w-full max-w-xl backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-black/5'}`}>
             <FadeIn>
               <h3 className={`text-xl font-medium tracking-tight mb-8 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
                 We are selectively opening early access to<br className="hidden md:block" /> internal systems and experiments.
