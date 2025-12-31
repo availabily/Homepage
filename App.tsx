@@ -1,19 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import { FadeIn } from './components/FadeIn';
+import ParticleSystem, { FXMode } from './components/ParticleSystem';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [showForm, setShowForm] = useState(false);
   const [formSuccess, setFormSuccess] = useState(false);
+  const [fxMode, setFxMode] = useState<FXMode>(FXMode.IDLE);
   const isDark = theme === 'dark';
+
+  // Ref for the Manifesto section
+  const manifestoRef = useRef<HTMLElement>(null);
 
   // Update body background to avoid overscroll color mismatch
   useEffect(() => {
     document.body.style.backgroundColor = isDark ? '#050505' : '#ffffff';
     document.body.style.color = isDark ? '#ffffff' : '#000000';
   }, [isDark]);
+
+  // IntersectionObserver to trigger gravity mode when Manifesto section is visible
+  useEffect(() => {
+    if (!manifestoRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Trigger gravity mode when 25% of the section is visible
+          if (entry.intersectionRatio >= 0.25) {
+            setFxMode(FXMode.GRAVITY);
+          }
+          // Optionally revert to IDLE if scrolling back up (remove this to keep gravity once triggered)
+          // else if (entry.intersectionRatio < 0.1) {
+          //   setFxMode(FXMode.IDLE);
+          // }
+        });
+      },
+      {
+        threshold: [0, 0.25, 0.5, 0.75, 1.0], // Multiple thresholds for smooth detection
+        rootMargin: '0px',
+      }
+    );
+
+    observer.observe(manifestoRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
@@ -29,7 +64,10 @@ const App: React.FC = () => {
 
   return (
     <div className={`min-h-screen font-sans transition-colors duration-500 ${isDark ? 'bg-black text-white selection:bg-gray-800' : 'bg-white text-black selection:bg-gray-200'}`}>
-      
+
+      {/* Fixed Particle System Background */}
+      <ParticleSystem color={isDark ? '#ffffff' : '#000000'} fxMode={fxMode} />
+
       {/* Lamp Icon / Theme Toggle */}
       <button 
         onClick={toggleTheme}
@@ -49,7 +87,7 @@ const App: React.FC = () => {
       <main className="w-full max-w-screen-xl mx-auto">
         
         {/* SECTION 1: Manifesto / Philosophy */}
-        <section className={`py-24 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
+        <section ref={manifestoRef} className={`py-24 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
           <div className={`grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/5' : 'bg-black/5'}`}>
             <div className="md:col-span-4">
               <FadeIn>

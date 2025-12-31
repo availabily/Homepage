@@ -1,5 +1,4 @@
 import React from 'react';
-import ParticleSystem from './ParticleSystem';
 import { motion } from 'framer-motion';
 
 interface HeroProps {
@@ -12,12 +11,9 @@ const Hero: React.FC<HeroProps> = ({ theme, onRequestAccess }) => {
 
   return (
     <section className={`relative h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`}>
-      
+
       {/* Background Gradient/Solid Fallback */}
       <div className={`absolute inset-0 z-0 transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} />
-
-      {/* Particle System */}
-      <ParticleSystem color={isDark ? '#ffffff' : '#000000'} />
 
       {/* Text Overlay */}
       <div className="relative z-20 container mx-auto px-6 md:px-12 pointer-events-none">
