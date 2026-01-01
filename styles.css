@@ -1,0 +1,147 @@
+/* Design Tokens for Premium Minimal Aesthetic */
+
+:root {
+  /* Background layers */
+  --bg-0: #000000;
+  --bg-1: #05070A;
+
+  /* Glass/Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-highlight: rgba(255, 255, 255, 0.08);
+  --glass-blur: 18px;
+
+  /* Dividers */
+  --divider: rgba(255, 255, 255, 0.10);
+
+  /* Trim accents (≤10% opacity) */
+  --trim-blue: rgba(59, 130, 246, 0.10);
+  --trim-pink: rgba(236, 72, 153, 0.10);
+
+  /* Grain/Noise */
+  --grain-opacity: 0.02;
+
+  /* Spacing/Rhythm */
+  --section-padding-y-mobile: 72px;
+  --section-padding-y-desktop: 120px;
+  --section-max-width: 1280px;
+}
+
+/* Premium Glass Component */
+.glass-premium {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-radius: 16px;
+  position: relative;
+}
+
+.glass-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--glass-highlight);
+  border-radius: 16px 16px 0 0;
+}
+
+.glass-premium-hover {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-premium-hover:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.glass-premium-hover:hover .trim-accent-blue,
+.glass-premium-hover:hover .trim-accent-pink {
+  height: 80px;
+  opacity: 1;
+}
+
+/* Section Dividers */
+.section-divider {
+  border-top: 1px solid var(--divider);
+}
+
+/* Trim Accent Line */
+.trim-accent-blue {
+  position: absolute;
+  width: 2px;
+  height: 40px;
+  background: var(--trim-blue);
+  left: 0;
+  top: 0;
+  transition: height 0.4s ease, opacity 0.4s ease;
+}
+
+.trim-accent-pink {
+  position: absolute;
+  width: 2px;
+  height: 40px;
+  background: var(--trim-pink);
+  right: 0;
+  top: 0;
+  transition: height 0.4s ease, opacity 0.4s ease;
+}
+
+/* Scroll Reveal Animation (via CSS) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scroll-reveal {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .glass-premium-hover {
+    transition: none;
+  }
+
+  .trim-accent-blue,
+  .trim-accent-pink {
+    transition: none;
+  }
+}
+
+/* Desktop adjustments */
+@media (min-width: 768px) {
+  :root {
+    --section-padding-y-mobile: var(--section-padding-y-desktop);
+  }
+
+  .section-divider {
+    padding-top: var(--section-padding-y-desktop);
+    padding-bottom: var(--section-padding-y-desktop);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  :root {
+    --glass-blur: 14px;
+  }
+
+  .section-divider {
+    padding-top: var(--section-padding-y-mobile);
+    padding-bottom: var(--section-padding-y-mobile);
+  }
+}

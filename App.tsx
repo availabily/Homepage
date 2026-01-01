@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import { FadeIn } from './components/FadeIn';
-import AuroraBackground from './components/AuroraBackground';
+import AmbientBackground from './components/AmbientBackground';
+import GlassCard from './components/GlassCard';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
@@ -63,8 +64,8 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen font-sans transition-colors duration-500 ${isDark ? 'bg-black text-white selection:bg-gray-800' : 'bg-white text-black selection:bg-gray-200'}`}>
 
-      {/* Aurora Background Layer (activates after hero) */}
-      <AuroraBackground isActive={auroraActive} />
+      {/* Ambient Background Layer (activates after hero) */}
+      <AmbientBackground isActive={auroraActive} />
 
       {/* Lamp Icon / Theme Toggle */}
       <button
@@ -81,12 +82,13 @@ const App: React.FC = () => {
       {/* Hero Section */}
       <Hero ref={heroRef} theme={theme} onRequestAccess={() => setShowForm(true)} />
 
-      {/* Main Content Wrapper */}
-      <main className="relative w-full max-w-screen-xl mx-auto">
+      {/* Main Content Wrapper - z-index removed to allow ambient background to show through */}
+      <main className="relative w-full max-w-screen-xl mx-auto" style={{ zIndex: 10 }}>
 
         {/* SECTION 1: Manifesto / Philosophy */}
-        <section className={`py-24 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-          <div className={`grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/3' : 'bg-black/3'}`}>
+        <section className="section-divider" style={{ paddingTop: 'var(--section-padding-y-mobile)', paddingBottom: 'var(--section-padding-y-mobile)' }}>
+          <div className="px-6 md:px-12">
+            <GlassCard className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 p-8 md:p-12" trimAccent="blue">
             <div className="md:col-span-4">
               <FadeIn>
                 <h2 className={`text-xs font-semibold tracking-widest uppercase sticky top-32 transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -114,57 +116,75 @@ const App: React.FC = () => {
                   </FadeIn>
                 ))}
               </div>
-            </div>
+            </GlassCard>
           </div>
         </section>
 
         {/* SECTION 2: Mission Statement */}
-        <section className={`py-32 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-          <div className={`max-w-4xl mx-auto text-center md:text-left backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/3' : 'bg-black/3'}`}>
+        <section className="section-divider" style={{ paddingTop: 'var(--section-padding-y-desktop)', paddingBottom: 'var(--section-padding-y-desktop)' }}>
+          <div className="px-6 md:px-12">
+            <GlassCard className="max-w-4xl mx-auto text-center md:text-left p-8 md:p-12">
             <FadeIn>
               <p className={`text-3xl md:text-5xl font-normal tracking-tight leading-[1.15] transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
                 We build systems designed to move work forward on their own.
               </p>
             </FadeIn>
+            </GlassCard>
           </div>
         </section>
 
-        {/* SECTION 3: Capabilities */}
-        <section className={`py-24 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-          <div className={`grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/3' : 'bg-black/3'}`}>
-            <div className="md:col-span-4">
-              <FadeIn>
-                <h2 className={`text-xs font-semibold tracking-widest uppercase sticky top-32 transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-                  Capabilities
-                </h2>
-              </FadeIn>
-            </div>
+        {/* SECTION 3: Capabilities - PREMIUM REFACTOR */}
+        <section className="section-divider" style={{ paddingTop: 'var(--section-padding-y-mobile)', paddingBottom: 'var(--section-padding-y-mobile)' }}>
+          <div className="px-6 md:px-12">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12">
+              {/* Left column: Label + Thesis */}
+              <div className="md:col-span-4">
+                <FadeIn>
+                  <div className="sticky top-32 space-y-6">
+                    <h2 className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                      Capabilities
+                    </h2>
+                    <p className={`text-sm leading-relaxed transition-colors duration-500 ${isDark ? 'text-gray-600' : 'text-gray-500'}`}>
+                      Building the infrastructure for autonomous intelligence that persists and executes.
+                    </p>
+                  </div>
+                </FadeIn>
+              </div>
 
-            <div className="md:col-span-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
-                {[
-                  "AI operating system foundations",
-                  "Autonomous execution layers",
-                  "Persistent intelligence infrastructure",
-                  "Internal systems that plan, reason, and act over time"
-                ].map((item, index) => (
-                  <FadeIn key={index} delay={index * 0.1}>
-                    <div className="flex flex-col gap-4">
-                      <div className={`w-8 h-px transition-colors duration-500 ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`}></div>
-                      <p className={`text-lg font-light tracking-tight leading-snug transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-900'}`}>
-                        {item}
-                      </p>
-                    </div>
-                  </FadeIn>
-                ))}
+              {/* Right column: 2x2 grid of capability cards */}
+              <div className="md:col-span-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[
+                    { title: "AI Operating System Foundations", accent: "blue" },
+                    { title: "Autonomous Execution Layers", accent: "pink" },
+                    { title: "Persistent Intelligence Infrastructure", accent: "blue" },
+                    { title: "Internal Systems that Plan, Reason, and Act Over Time", accent: "pink" }
+                  ].map((item, index) => (
+                    <FadeIn key={index} delay={index * 0.1}>
+                      <GlassCard
+                        className="p-6 h-full"
+                        hover={true}
+                        trimAccent={item.accent as 'blue' | 'pink'}
+                      >
+                        <div className="flex flex-col gap-4 h-full">
+                          <div className={`w-8 h-px transition-colors duration-500 ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`}></div>
+                          <p className={`text-base font-light tracking-tight leading-snug transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-900'}`}>
+                            {item.title}
+                          </p>
+                        </div>
+                      </GlassCard>
+                    </FadeIn>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Why This Matters */}
-        <section className={`py-32 px-6 md:px-12 transition-colors duration-500 ${isDark ? 'bg-white/5' : 'bg-gray-50/50'}`}>
-          <div className={`max-w-3xl mx-auto text-center backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/3' : 'bg-black/3'}`}>
+        <section className="section-divider" style={{ paddingTop: 'var(--section-padding-y-desktop)', paddingBottom: 'var(--section-padding-y-desktop)' }}>
+          <div className="px-6 md:px-12">
+            <GlassCard className="max-w-3xl mx-auto text-center p-8 md:p-12">
             <div className="space-y-12">
               <FadeIn delay={0}>
                 <div className="space-y-2">
@@ -184,23 +204,27 @@ const App: React.FC = () => {
                 </div>
               </FadeIn>
             </div>
+            </GlassCard>
           </div>
         </section>
 
         {/* Who It's For */}
-        <section className="py-24 px-6 md:px-12">
-          <div className={`max-w-2xl mx-auto text-center backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/3' : 'bg-black/3'}`}>
+        <section className="section-divider" style={{ paddingTop: 'var(--section-padding-y-mobile)', paddingBottom: 'var(--section-padding-y-mobile)' }}>
+          <div className="px-6 md:px-12">
+            <GlassCard className="max-w-2xl mx-auto text-center p-8 md:p-12" trimAccent="pink">
             <FadeIn>
               <p className={`text-lg leading-relaxed font-light transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-800'}`}>
                 Insinuate is for operators and early adopters who understand where intelligent systems are heading — and want to be early.
               </p>
             </FadeIn>
+            </GlassCard>
           </div>
         </section>
 
         {/* Access / CTA Section */}
-        <section id="access-section" className={`py-32 px-6 md:px-12 border-t flex flex-col items-center text-center transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>
-          <div className={`w-full max-w-xl backdrop-blur-xl rounded-2xl p-8 md:p-12 ${isDark ? 'bg-white/3' : 'bg-black/3'}`}>
+        <section id="access-section" className="section-divider" style={{ paddingTop: 'var(--section-padding-y-desktop)', paddingBottom: 'var(--section-padding-y-desktop)' }}>
+          <div className="px-6 md:px-12 flex flex-col items-center text-center">
+            <GlassCard className="w-full max-w-xl p-8 md:p-12">
             <FadeIn>
               <h3 className={`text-xl font-medium tracking-tight mb-8 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
                 We are selectively opening early access to<br className="hidden md:block" /> internal systems and experiments.
@@ -298,6 +322,7 @@ const App: React.FC = () => {
                 </FadeIn>
               )}
             </div>
+            </GlassCard>
           </div>
         </section>
 
