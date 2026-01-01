@@ -29,26 +29,6 @@ const AuroraBackground: React.FC<AuroraBackgroundProps> = ({ isActive }) => {
         overflow: 'hidden',
       }}
     >
-      {/* DEBUG: Test if container is visible when active */}
-      {isActive && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            background: 'red',
-            color: 'white',
-            padding: '20px',
-            fontSize: '24px',
-            zIndex: 9999,
-            border: '5px solid yellow',
-          }}
-        >
-          AURORA ACTIVE - YOU SHOULD SEE THIS
-        </div>
-      )}
-
       {/* Aurora Layer 1: Blue blob */}
       <div
         className="aurora-blob"
