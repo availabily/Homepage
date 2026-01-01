@@ -1,19 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import { FadeIn } from './components/FadeIn';
+import AuroraBackground from './components/AuroraBackground';
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [showForm, setShowForm] = useState(false);
   const [formSuccess, setFormSuccess] = useState(false);
+  const [auroraActive, setAuroraActive] = useState(false);
   const isDark = theme === 'dark';
+
+  // Refs for intersection observers
+  const heroRef = useRef<HTMLElement>(null);
 
   // Update body background to avoid overscroll color mismatch
   useEffect(() => {
     document.body.style.backgroundColor = isDark ? '#050505' : '#ffffff';
     document.body.style.color = isDark ? '#ffffff' : '#000000';
   }, [isDark]);
+
+  // IntersectionObserver to activate aurora when hero exits viewport
+  useEffect(() => {
+    if (!heroRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Activate aurora when hero is less than 20% visible
+          if (entry.intersectionRatio < 0.2) {
+            setAuroraActive(true);
+          } else {
+            setAuroraActive(false);
+          }
+        });
+      },
+      {
+        threshold: [0, 0.2, 0.5, 0.8, 1.0],
+        rootMargin: '0px',
+      }
+    );
+
+    observer.observe(heroRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
@@ -30,6 +63,9 @@ const App: React.FC = () => {
   return (
     <div className={`min-h-screen font-sans transition-colors duration-500 ${isDark ? 'bg-black text-white selection:bg-gray-800' : 'bg-white text-black selection:bg-gray-200'}`}>
 
+      {/* Aurora Background Layer (activates after hero) */}
+      <AuroraBackground isActive={auroraActive} />
+
       {/* Lamp Icon / Theme Toggle */}
       <button
         onClick={toggleTheme}
@@ -43,7 +79,7 @@ const App: React.FC = () => {
       </button>
 
       {/* Hero Section */}
-      <Hero theme={theme} onRequestAccess={() => setShowForm(true)} />
+      <Hero ref={heroRef} theme={theme} onRequestAccess={() => setShowForm(true)} />
 
       {/* Main Content Wrapper */}
       <main className="w-full max-w-screen-xl mx-auto">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import ParticleSystem from './ParticleSystem';
 import { motion } from 'framer-motion';
 
@@ -7,11 +7,12 @@ interface HeroProps {
   onRequestAccess?: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ theme, onRequestAccess }) => {
+const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
+  const { theme, onRequestAccess } = props;
   const isDark = theme === 'dark';
 
   return (
-    <section className={`relative h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`}>
+    <section ref={ref} className={`relative h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`}>
 
       {/* Background Gradient/Solid Fallback */}
       <div className={`absolute inset-0 z-0 transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} />
@@ -74,6 +75,8 @@ const Hero: React.FC<HeroProps> = ({ theme, onRequestAccess }) => {
       </div>
     </section>
   );
-};
+});
+
+Hero.displayName = 'Hero';
 
 export default Hero;
