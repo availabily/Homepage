@@ -82,7 +82,7 @@ const App: React.FC = () => {
       <Hero ref={heroRef} theme={theme} onRequestAccess={() => setShowForm(true)} />
 
       {/* Main Content Wrapper */}
-      <main className="w-full max-w-screen-xl mx-auto">
+      <main className="relative w-full max-w-screen-xl mx-auto" style={{ zIndex: 10 }}>
 
         {/* SECTION 1: Manifesto / Philosophy */}
         <section className={`py-24 px-6 md:px-12 border-b transition-colors duration-500 ${isDark ? 'border-gray-800' : 'border-gray-100'}`}>

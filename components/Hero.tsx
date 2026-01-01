@@ -12,7 +12,7 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
   const isDark = theme === 'dark';
 
   return (
-    <section ref={ref} className={`relative h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`}>
+    <section ref={ref} className={`relative h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} style={{ zIndex: 5 }}>
 
       {/* Background Gradient/Solid Fallback */}
       <div className={`absolute inset-0 z-0 transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} />

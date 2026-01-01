@@ -239,8 +239,8 @@ const AuroraShader: React.FC<AuroraShaderProps> = ({ time, scrollOffset, reduced
   `;
 
   return (
-    <mesh ref={meshRef} position={[0, 0, -5]}>
-      <planeGeometry args={[20, 20]} />
+    <mesh ref={meshRef} position={[0, 0, 0]}>
+      <planeGeometry args={[30, 30]} />
       <shaderMaterial
         uniforms={uniforms}
         vertexShader={vertexShader}
@@ -248,6 +248,7 @@ const AuroraShader: React.FC<AuroraShaderProps> = ({ time, scrollOffset, reduced
         transparent={true}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
+        side={THREE.DoubleSide}
       />
     </mesh>
   );
@@ -311,11 +312,19 @@ const AuroraBackground: React.FC<AuroraBackgroundProps> = ({ isActive }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none" style={{ opacity: isActive ? 1 : 0, transition: 'opacity 800ms ease-out' }}>
+    <div
+      className="fixed inset-0 pointer-events-none"
+      style={{
+        opacity: isActive ? 1 : 0,
+        transition: 'opacity 800ms ease-out',
+        zIndex: 1,
+      }}
+    >
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         dpr={dpr}
         gl={{ antialias: false, alpha: true }}
+        style={{ background: 'transparent' }}
       >
         <AuroraScene reducedMotion={reducedMotion} isActive={isActive} />
       </Canvas>
