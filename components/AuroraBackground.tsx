@@ -124,6 +124,14 @@ const AuroraShader: React.FC<AuroraShaderProps> = ({ time, scrollOffset, reduced
     [reducedMotion, isActive]
   );
 
+  // DEBUG: Check if shader material compiles
+  useEffect(() => {
+    if (!meshRef.current) return;
+    const material = meshRef.current.material as THREE.ShaderMaterial;
+    console.log('[Aurora Debug] Shader material:', material);
+    console.log('[Aurora Debug] Uniforms:', material.uniforms);
+  }, []);
+
   useFrame(() => {
     if (!meshRef.current) return;
     const material = meshRef.current.material as THREE.ShaderMaterial;
@@ -284,12 +292,20 @@ const AuroraScene: React.FC<{ reducedMotion: boolean; isActive: boolean }> = ({ 
   });
 
   return (
-    <AuroraShader
-      time={time}
-      scrollOffset={scrollOffset}
-      reducedMotion={reducedMotion}
-      isActive={isActive}
-    />
+    <>
+      {/* DEBUG: Simple test mesh to verify Canvas is rendering */}
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry args={[5, 5]} />
+        <meshBasicMaterial color="red" transparent opacity={0.5} />
+      </mesh>
+
+      <AuroraShader
+        time={time}
+        scrollOffset={scrollOffset}
+        reducedMotion={reducedMotion}
+        isActive={isActive}
+      />
+    </>
   );
 };
 
@@ -322,8 +338,8 @@ const AuroraBackground: React.FC<AuroraBackgroundProps> = ({ isActive }) => {
     <div
       className="fixed inset-0 pointer-events-none"
       style={{
-        opacity: isActive ? 1 : 0,
-        transition: 'opacity 800ms ease-out',
+        opacity: 1, // TEMPORARILY FORCED TO 1 FOR DEBUGGING (was: isActive ? 1 : 0)
+        // transition: 'opacity 800ms ease-out', // DISABLED FOR DEBUGGING
         zIndex: 2, // Changed from 1 to 2 to ensure it's above background but below particles (z-10)
       }}
     >
