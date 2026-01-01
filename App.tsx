@@ -8,7 +8,7 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [showForm, setShowForm] = useState(false);
   const [formSuccess, setFormSuccess] = useState(false);
-  const [auroraActive, setAuroraActive] = useState(false);
+  const [auroraActive, setAuroraActive] = useState(true); // TEMPORARILY FORCED TO TRUE FOR DEBUGGING
   const isDark = theme === 'dark';
 
   // Refs for intersection observers
@@ -27,10 +27,13 @@ const App: React.FC = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          console.log('[Aurora Debug] IntersectionObserver fired - ratio:', entry.intersectionRatio);
           // Activate aurora when hero is less than 20% visible
           if (entry.intersectionRatio < 0.2) {
+            console.log('[Aurora Debug] Activating aurora (hero <20% visible)');
             setAuroraActive(true);
           } else {
+            console.log('[Aurora Debug] Deactivating aurora (hero >=20% visible)');
             setAuroraActive(false);
           }
         });

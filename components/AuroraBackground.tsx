@@ -33,7 +33,7 @@ const CONFIG = {
   blueWeight: 0.6,
   pinkWeight: 0.5,
   yellowWeight: 0.08,
-  baseAlpha: 0.18,
+  baseAlpha: 0.65, // TEMPORARILY INCREASED FOR DEBUGGING (was 0.18)
   grainIntensity: 0.025,
   blurAmount: 1.8,
   scrollParallaxStrength: 0.15,
@@ -135,6 +135,11 @@ const AuroraShader: React.FC<AuroraShaderProps> = ({ time, scrollOffset, reduced
 
     material.uniforms.uTime.value = time;
     material.uniforms.uScrollOffset.value = scrollOffset;
+
+    // DEBUG: Log alpha value when it changes significantly
+    if (Math.abs(targetAlpha - currentAlpha) > 0.01) {
+      console.log('[Aurora Debug] isActive:', isActive, 'currentAlpha:', currentAlpha.toFixed(3), 'targetAlpha:', targetAlpha);
+    }
   });
 
   useEffect(() => {
@@ -292,6 +297,8 @@ const AuroraBackground: React.FC<AuroraBackgroundProps> = ({ isActive }) => {
   const [reducedMotion, setReducedMotion] = React.useState(false);
 
   useEffect(() => {
+    console.log('[Aurora Debug] AuroraBackground component mounted');
+
     // Detect prefers-reduced-motion
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mediaQuery.matches);
@@ -317,9 +324,26 @@ const AuroraBackground: React.FC<AuroraBackgroundProps> = ({ isActive }) => {
       style={{
         opacity: isActive ? 1 : 0,
         transition: 'opacity 800ms ease-out',
-        zIndex: 1,
+        zIndex: 2, // Changed from 1 to 2 to ensure it's above background but below particles (z-10)
       }}
     >
+      {/* DEBUG: Visible indicator that this div is rendering */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          background: 'lime',
+          color: 'black',
+          padding: '4px 8px',
+          fontSize: '12px',
+          zIndex: 9999,
+          pointerEvents: 'auto',
+        }}
+      >
+        Aurora {isActive ? 'ACTIVE' : 'INACTIVE'}
+      </div>
+
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         dpr={dpr}
