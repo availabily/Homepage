@@ -6,7 +6,7 @@ import AmbientBackground from './components/AmbientBackground';
 import GlassCard from './components/GlassCard';
 
 const App: React.FC = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const theme = 'dark' as const;
   const [auroraActive, setAuroraActive] = useState(false);
   const isDark = theme === 'dark';
 
@@ -47,9 +47,6 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
 
   return (
     <div className={`min-h-screen font-sans transition-colors duration-500 ${isDark ? 'bg-black text-white selection:bg-gray-800' : 'bg-white text-black selection:bg-gray-200'}`}>
@@ -57,17 +54,6 @@ const App: React.FC = () => {
       {/* Ambient Background Layer (activates after hero) */}
       <AmbientBackground isActive={auroraActive} />
 
-      {/* Lamp Icon / Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        className="fixed top-6 right-6 z-50 p-2 text-gray-500 hover:text-gray-400 transition-colors focus:outline-none"
-        aria-label="Toggle theme"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2v8" />
-          <path d="M5.7 10h12.6c.9 0 1.2.9.7 1.6l-2.9 4.4a5 5 0 0 1-8.2 0l-2.9-4.4c-.5-.7-.2-1.6.7-1.6Z" />
-        </svg>
-      </button>
 
       {/* Hero Section */}
       <Hero ref={heroRef} theme={theme} />
