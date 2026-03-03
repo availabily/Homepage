@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import ParticleSystem from './ParticleSystem';
 import { motion } from 'framer-motion';
+import logo from '../IMG_4402.jpeg';
 
 interface HeroProps {
   theme: 'light' | 'dark';
@@ -36,14 +37,19 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
       {/* Text Overlay */}
       <div className="relative z-20 container mx-auto px-6 md:px-12 pointer-events-none">
         <div className="max-w-3xl mx-auto text-center">
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className={`text-xl font-semibold tracking-tighter mb-8 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}
+            className="mb-8 flex justify-center"
           >
-            COBOUND
-          </motion.h1>
+            <img
+              src={logo}
+              alt="Cobound logo"
+              className="h-12 md:h-16 w-auto object-contain"
+              style={{ filter: isDark ? 'none' : 'invert(1)' }}
+            />
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0 }}
