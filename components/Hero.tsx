@@ -8,7 +8,7 @@ interface HeroProps {
 }
 
 const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
-  const { theme, onRequestAccess } = props;
+  const { theme } = props;
   const isDark = theme === 'dark';
 
   return (
@@ -29,7 +29,7 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className={`text-xl font-semibold tracking-tighter mb-8 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}
           >
-            Insinuate
+            COBOUND
           </motion.h1>
 
           <motion.p
@@ -38,7 +38,7 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
             className={`text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] mb-8 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}
           >
-            Building the next generation of AI operating systems.
+            Multi-agent AI systems fail because of their shape, not their intelligence.
           </motion.p>
 
           <motion.div
@@ -48,28 +48,44 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             className="flex flex-col items-center gap-8 pointer-events-auto"
           >
             <span className={`text-sm font-medium tracking-wide uppercase text-xs transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              Intelligence as infrastructure
+              The topology of coordination
             </span>
 
-            <button
-              className={`
-                group relative px-6 py-3
-                border bg-transparent
-                text-sm font-medium tracking-tight
-                transition-all duration-300 ease-out
-                active:scale-[0.98]
-                ${isDark
-                  ? 'border-gray-700 text-white hover:border-gray-500 hover:bg-gray-900'
-                  : 'border-gray-300 text-black hover:border-gray-900 hover:bg-gray-50'
-                }
-              `}
-              onClick={() => {
-                onRequestAccess?.();
-                document.getElementById('access-section')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Request early access
-            </button>
+            <div className="flex gap-4">
+              <a
+                href="#arxiv"
+                className={`
+                  group relative px-6 py-3
+                  text-sm font-medium tracking-tight
+                  transition-all duration-300 ease-out
+                  active:scale-[0.98]
+                  ${isDark
+                    ? 'bg-white text-black hover:bg-gray-200'
+                    : 'bg-black text-white hover:bg-gray-800'
+                  }
+                `}
+              >
+                Read the Paper
+              </a>
+              <a
+                href="https://github.com/coboundinc-source/cobound"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`
+                  group relative px-6 py-3
+                  border bg-transparent
+                  text-sm font-medium tracking-tight
+                  transition-all duration-300 ease-out
+                  active:scale-[0.98]
+                  ${isDark
+                    ? 'border-gray-700 text-white hover:border-gray-500 hover:bg-gray-900'
+                    : 'border-gray-300 text-black hover:border-gray-900 hover:bg-gray-50'
+                  }
+                `}
+              >
+                View the Code
+              </a>
+            </div>
           </motion.div>
         </div>
       </div>
