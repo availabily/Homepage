@@ -6,7 +6,8 @@ import AmbientBackground from './components/AmbientBackground';
 import GlassCard from './components/GlassCard';
 
 const App: React.FC = () => {
-  const theme = 'dark' as const;
+  const [inverted, setInverted] = useState(false);
+  const theme: 'light' | 'dark' = inverted ? 'light' : 'dark';
   const [auroraActive, setAuroraActive] = useState(false);
   const isDark = theme === 'dark';
 
@@ -49,14 +50,14 @@ const App: React.FC = () => {
 
 
   return (
-    <div className={`min-h-screen font-sans transition-colors duration-500 ${isDark ? 'bg-black text-white selection:bg-gray-800' : 'bg-white text-black selection:bg-gray-200'}`}>
+    <div className={`min-h-screen font-sans transition-colors duration-500 ${isDark ? 'bg-black text-white selection:bg-gray-800' : 'bg-white text-black selection:bg-gray-200 light-mode'}`}>
 
       {/* Ambient Background Layer (activates after hero) */}
       <AmbientBackground isActive={auroraActive} />
 
 
       {/* Hero Section */}
-      <Hero ref={heroRef} theme={theme} />
+      <Hero ref={heroRef} theme={theme} onToggleTheme={() => setInverted(v => !v)} />
 
       {/* Main Content Wrapper - z-index removed to allow ambient background to show through */}
       <main className="relative w-full max-w-screen-xl mx-auto" style={{ zIndex: 10 }}>
@@ -67,7 +68,7 @@ const App: React.FC = () => {
             <GlassCard className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12 p-8 md:p-12" trimAccent="blue">
               <div className="md:col-span-4">
                 <FadeIn>
-                  <h2 className={`text-xs font-semibold tracking-widest uppercase sticky top-32 transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <h2 className={`text-xs font-semibold tracking-widest uppercase sticky top-32 transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>
                     Why COBOUND
                   </h2>
                 </FadeIn>
@@ -82,7 +83,7 @@ const App: React.FC = () => {
                   ].map((item, i) => (
                     <FadeIn key={i} delay={i * 0.1}>
                       <div className="group flex flex-col gap-4">
-                        <span className={`text-xs font-mono transition-colors duration-500 ${isDark ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <span className={`text-xs font-mono transition-colors duration-500 ${isDark ? 'text-gray-700' : 'text-gray-500'}`}>
                           {(i + 1).toString().padStart(2, '0')}
                         </span>
                         <p className={`text-2xl md:text-3xl font-light tracking-tight transition-colors duration-500 ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
@@ -121,7 +122,7 @@ const App: React.FC = () => {
               <div className="md:col-span-4">
                 <FadeIn>
                   <div className="sticky top-32 space-y-6">
-                    <h2 className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <h2 className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-600'}`}>
                       The Proof
                     </h2>
                     <p className={`text-sm leading-relaxed transition-colors duration-500 ${isDark ? 'text-gray-600' : 'text-gray-500'}`}>
