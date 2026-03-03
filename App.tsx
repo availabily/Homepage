@@ -7,18 +7,18 @@ import GlassCard from './components/GlassCard';
 
 const App: React.FC = () => {
   const [inverted, setInverted] = useState(false);
-  const theme: 'light' | 'dark' = inverted ? 'light' : 'dark';
+  const heroTheme: 'light' | 'dark' = inverted ? 'light' : 'dark';
   const [auroraActive, setAuroraActive] = useState(false);
-  const isDark = theme === 'dark';
+  const isDark = true; // sections after Hero are always dark
 
   // Refs for intersection observers
   const heroRef = useRef<HTMLElement>(null);
 
   // Update body background to avoid overscroll color mismatch
   useEffect(() => {
-    document.body.style.backgroundColor = isDark ? '#050505' : '#ffffff';
-    document.body.style.color = isDark ? '#ffffff' : '#000000';
-  }, [isDark]);
+    document.body.style.backgroundColor = '#050505';
+    document.body.style.color = '#ffffff';
+  }, []);
 
   // IntersectionObserver to activate aurora when hero exits viewport
   useEffect(() => {
@@ -50,14 +50,14 @@ const App: React.FC = () => {
 
 
   return (
-    <div className={`min-h-screen font-sans transition-colors duration-500 ${isDark ? 'bg-black text-white selection:bg-gray-800' : 'bg-white text-black selection:bg-gray-200 light-mode'}`}>
+    <div className="min-h-screen font-sans transition-colors duration-500 bg-black text-white selection:bg-gray-800">
 
       {/* Ambient Background Layer (activates after hero) */}
       <AmbientBackground isActive={auroraActive} />
 
 
       {/* Hero Section */}
-      <Hero ref={heroRef} theme={theme} onToggleTheme={() => setInverted(v => !v)} />
+      <Hero ref={heroRef} theme={heroTheme} onToggleTheme={() => setInverted(v => !v)} />
 
       {/* Main Content Wrapper - z-index removed to allow ambient background to show through */}
       <main className="relative w-full max-w-screen-xl mx-auto" style={{ zIndex: 10 }}>
@@ -245,7 +245,7 @@ const App: React.FC = () => {
 
       </main>
 
-      <Footer theme={theme} />
+      <Footer theme="dark" />
     </div>
   );
 };
