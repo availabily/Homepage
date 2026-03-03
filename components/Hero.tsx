@@ -53,21 +53,6 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
 
             <div className="flex gap-4">
               <a
-                href="#arxiv"
-                className={`
-                  group relative px-6 py-3
-                  text-sm font-medium tracking-tight
-                  transition-all duration-300 ease-out
-                  active:scale-[0.98]
-                  ${isDark
-                    ? 'bg-white text-black hover:bg-gray-200'
-                    : 'bg-black text-white hover:bg-gray-800'
-                  }
-                `}
-              >
-                Read the Paper
-              </a>
-              <a
                 href="https://github.com/coboundinc-source/cobound"
                 target="_blank"
                 rel="noopener noreferrer"

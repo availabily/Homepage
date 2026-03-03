@@ -231,22 +231,6 @@ const App: React.FC = () => {
                 <FadeIn delay={0.2}>
                   <div className="flex flex-col items-center gap-4">
                     <a
-                      href="#arxiv"
-                      className={`
-                        px-8 py-4
-                        text-sm font-medium tracking-wide
-                        transition-colors duration-300
-                        min-w-[200px]
-                        text-center
-                        ${isDark
-                          ? 'bg-white text-black hover:bg-gray-200'
-                          : 'bg-black text-white hover:bg-gray-800'
-                        }
-                      `}
-                    >
-                      Read the Paper
-                    </a>
-                    <a
                       href="https://github.com/coboundinc-source/cobound"
                       target="_blank"
                       rel="noopener noreferrer"
