@@ -5,10 +5,11 @@ import { motion } from 'framer-motion';
 interface HeroProps {
   theme: 'light' | 'dark';
   onRequestAccess?: () => void;
+  onToggleTheme?: () => void;
 }
 
 const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
-  const { theme } = props;
+  const { theme, onToggleTheme } = props;
   const isDark = theme === 'dark';
 
   return (
@@ -19,6 +20,18 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
 
       {/* Particle System */}
       <ParticleSystem color={isDark ? '#ffffff' : '#000000'} />
+
+      {/* Theme toggle button */}
+      <button
+        onClick={onToggleTheme}
+        className={`absolute top-6 right-6 z-30 text-2xl leading-none bg-transparent border-0 cursor-pointer transition-colors duration-300 ${
+          isDark ? 'text-gray-600 hover:text-gray-300' : 'text-gray-400 hover:text-gray-700'
+        }`}
+        aria-label="Toggle color scheme"
+        title="Toggle color scheme"
+      >
+        ☂
+      </button>
 
       {/* Text Overlay */}
       <div className="relative z-20 container mx-auto px-6 md:px-12 pointer-events-none">
