@@ -46,6 +46,8 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             <img
               src={logo}
               alt="Cobound logo"
+              width={1024}
+              height={877}
               className="h-12 md:h-16 w-auto object-contain"
               style={{ filter: isDark ? 'none' : 'invert(1)' }}
             />
