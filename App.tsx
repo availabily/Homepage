@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import { FadeIn } from './components/FadeIn';
 import AmbientBackground from './components/AmbientBackground';
 import GlassCard from './components/GlassCard';
+import ProductsSection from './components/ProductsSection';
 
 const App: React.FC = () => {
   const [inverted, setInverted] = useState(false);
@@ -242,6 +243,9 @@ const App: React.FC = () => {
             </GlassCard>
           </div>
         </section>
+
+        {/* SECTION: Products */}
+        <ProductsSection />
 
       </main>
 
