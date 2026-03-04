@@ -29,10 +29,10 @@ const XIcon = () => (
 
 const Footer: React.FC<FooterProps> = ({ theme }) => {
   const isDark = theme === 'dark';
-  const iconClass = `transition-colors duration-200 ${isDark ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`;
+  const iconClass = `transition-colors duration-200 ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-black'}`;
 
   return (
-    <footer className={`w-full py-12 border-t transition-colors duration-500 ${isDark ? 'border-gray-800 bg-black' : 'border-gray-100 bg-white'}`}>
+    <footer className={`relative w-full py-12 border-t transition-colors duration-500 ${isDark ? 'border-gray-800 bg-black' : 'border-gray-100 bg-white'}`} style={{ zIndex: 10 }}>
       <FadeIn>
         <div className={`container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs font-medium tracking-tight transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
           <div className="flex items-center gap-6">
