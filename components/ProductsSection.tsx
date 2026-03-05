@@ -269,7 +269,7 @@ const ValidatorPlayground: React.FC = () => {
 const products = [
   {
     id: 'validator',
-    name: 'COBOUND VALIDATOR',
+    name: 'Cobound Validator',
     status: 'Available Now',
     statusColor: 'green' as const,
     description:
@@ -281,7 +281,7 @@ const products = [
   },
   {
     id: 'designer',
-    name: 'COBOUND DESIGNER',
+    name: 'Cobound Designer',
     status: 'Coming Q3 2026',
     statusColor: 'muted' as const,
     description:
@@ -293,7 +293,7 @@ const products = [
   },
   {
     id: 'audit',
-    name: 'COBOUND AUDIT',
+    name: 'Cobound Audit',
     status: 'Available Now',
     statusColor: 'green' as const,
     description:
