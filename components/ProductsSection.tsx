@@ -266,7 +266,21 @@ const ValidatorPlayground: React.FC = () => {
 
 // ─── Product data ──────────────────────────────────────────────────────────
 
-const products = [
+interface Product {
+  id: string;
+  name: string;
+  status: string;
+  statusColor: 'green' | 'muted';
+  description: string;
+  valueProp: string;
+  tags: string[];
+  accent: 'blue' | 'pink';
+  showCTA: boolean;
+  ctaUrl?: string;
+  ctaLabel?: string;
+}
+
+const products: Product[] = [
   {
     id: 'validator',
     name: 'Cobound Validator',
@@ -282,14 +296,16 @@ const products = [
   {
     id: 'designer',
     name: 'Cobound Designer',
-    status: 'Coming Q3 2026',
-    statusColor: 'muted' as const,
+    status: 'Available Now',
+    statusColor: 'green' as const,
     description:
       'Visual topology designer for multi-agent architectures. Draw your agents, draw your communication edges, and watch the coordination feasibility indicator update in real time. One-click export to AG2, LangGraph, CrewAI, and MetaGPT.',
     valueProp: 'Design coordination-safe systems before writing a single line of code.',
     tags: ['Web App', 'Visual', 'Team collaboration'],
     accent: 'pink' as const,
-    showCTA: false,
+    showCTA: true,
+    ctaUrl: 'https://designer.cobound.dev',
+    ctaLabel: 'Open Designer →',
   },
   {
     id: 'audit',
@@ -385,18 +401,33 @@ const ProductsSection: React.FC = () => {
                       ))}
                     </div>
 
-                    {/* Validator CTA + pip snippet */}
+                    {/* CTA */}
                     {product.showCTA && (
                       <div style={{ paddingTop: '0.2rem' }}>
-                        <button
-                          onClick={scrollToPlayground}
-                          style={{ padding: '0.55rem 1.2rem', background: '#059669', border: 'none', borderRadius: '5px', color: 'white', fontWeight: 600, fontSize: '0.82rem', letterSpacing: '0.02em', cursor: 'pointer', transition: 'background 0.2s' }}
-                          onMouseEnter={(e) => (e.currentTarget.style.background = '#10b981')}
-                          onMouseLeave={(e) => (e.currentTarget.style.background = '#059669')}
-                        >
-                          Try it →
-                        </button>
-                        <PipSnippet />
+                        {'ctaUrl' in product && product.ctaUrl ? (
+                          <a
+                            href={product.ctaUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ display: 'inline-block', padding: '0.55rem 1.2rem', background: '#059669', borderRadius: '5px', color: 'white', fontWeight: 600, fontSize: '0.82rem', letterSpacing: '0.02em', cursor: 'pointer', transition: 'background 0.2s', textDecoration: 'none' }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = '#10b981')}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = '#059669')}
+                          >
+                            {product.ctaLabel}
+                          </a>
+                        ) : (
+                          <>
+                            <button
+                              onClick={scrollToPlayground}
+                              style={{ padding: '0.55rem 1.2rem', background: '#059669', border: 'none', borderRadius: '5px', color: 'white', fontWeight: 600, fontSize: '0.82rem', letterSpacing: '0.02em', cursor: 'pointer', transition: 'background 0.2s' }}
+                              onMouseEnter={(e) => (e.currentTarget.style.background = '#10b981')}
+                              onMouseLeave={(e) => (e.currentTarget.style.background = '#059669')}
+                            >
+                              Try it →
+                            </button>
+                            <PipSnippet />
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
