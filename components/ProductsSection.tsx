@@ -134,7 +134,7 @@ const LiveOutputPanel: React.FC<LiveOutputPanelProps> = ({ result, error, fading
   if (!ready) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(156,163,175,0.35)', fontFamily: 'monospace', fontSize: '0.75rem' }}>
-        <span>Paste your agent topology and click Check Coordination →</span>
+        <span>Your verdict will appear here.<br />Edit the YAML on the left to begin.</span>
       </div>
     );
   }
@@ -162,12 +162,33 @@ const LiveOutputPanel: React.FC<LiveOutputPanelProps> = ({ result, error, fading
     <div style={{ transition: 'opacity 0.22s ease', opacity: fading ? 0 : 1 }}>
       <div style={{ borderLeft: `3px solid ${isObstructed ? '#f87171' : '#34d399'}`, paddingLeft: '1rem', marginBottom: '1.25rem' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'monospace', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.06em', color: isObstructed ? '#f87171' : '#34d399', marginBottom: '0.45rem' }}>
-          <span style={{ fontSize: '0.55rem' }}>●</span>
-          {isObstructed ? 'OBSTRUCTED' : 'FEASIBLE'}
+          {isObstructed ? '✗' : '✓'}&nbsp;{isObstructed ? 'OBSTRUCTED' : 'FEASIBLE'}&nbsp;&nbsp;—&nbsp;&nbsp;H¹(K;ℤ) {isObstructed ? '≠' : '='} 0
         </div>
-        <p style={{ fontSize: '0.82rem', color: isObstructed ? 'rgba(248,113,113,0.8)' : 'rgba(52,211,153,0.8)', margin: '0 0 0.5rem' }}>
-          {isObstructed ? 'Coordination is mathematically impossible' : 'Coordination is mathematically guaranteed'}
-        </p>
+        {isObstructed ? (
+          <>
+            <p style={{ fontSize: '0.82rem', color: 'rgba(248,113,113,0.8)', margin: '0 0 0.25rem' }}>
+              Cycle detected. This system cannot coordinate.
+            </p>
+            <p style={{ fontSize: '0.82rem', color: 'rgba(248,113,113,0.65)', margin: '0 0 0.25rem' }}>
+              No scheduling, retry logic, or engineering fix resolves this.
+            </p>
+            <p style={{ fontSize: '0.82rem', color: 'rgba(248,113,113,0.65)', margin: '0 0 0.5rem' }}>
+              The failure is mathematical, not operational.
+            </p>
+          </>
+        ) : (
+          <>
+            <p style={{ fontSize: '0.82rem', color: 'rgba(52,211,153,0.8)', margin: '0 0 0.25rem' }}>
+              No cycles detected.
+            </p>
+            <p style={{ fontSize: '0.82rem', color: 'rgba(52,211,153,0.8)', margin: '0 0 0.25rem' }}>
+              This system can coordinate.
+            </p>
+            <p style={{ fontSize: '0.82rem', color: 'rgba(52,211,153,0.8)', margin: '0 0 0.5rem' }}>
+              Coordination failure is mathematically impossible.
+            </p>
+          </>
+        )}
         {isObstructed && firstCycle && (
           <p style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: 'rgba(248,113,113,0.6)', margin: '0 0 0.35rem', wordBreak: 'break-word' }}>
             Cycle: {firstCycle.join(' → ')}
@@ -178,8 +199,11 @@ const LiveOutputPanel: React.FC<LiveOutputPanelProps> = ({ result, error, fading
             + {result.cycles.length - 1} more cycle{result.cycles.length > 2 ? 's' : ''} detected
           </p>
         )}
-        <p style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: 'rgba(156,163,175,0.5)', margin: 0 }}>
-          H¹(K;ℤ) {isObstructed ? '≠' : '='} 0 — Theorem: h1_trivial_iff_oneConnected
+        <p style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: 'rgba(156,163,175,0.5)', margin: '0 0 0.15rem' }}>
+          Formal proof: {isObstructed ? 'h1_trivial_iff_oneConnected' : 'tree_authority_h1_trivial'}
+        </p>
+        <p style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: 'rgba(156,163,175,0.4)', margin: 0 }}>
+          github.com/coboundinc/cobound
         </p>
       </div>
 
@@ -198,10 +222,10 @@ const LiveOutputPanel: React.FC<LiveOutputPanelProps> = ({ result, error, fading
               After suggested fix:
             </p>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'monospace', fontSize: '0.75rem', fontWeight: 600, color: '#34d399', letterSpacing: '0.06em', marginBottom: '0.15rem' }}>
-              <span style={{ fontSize: '0.5rem' }}>●</span> FEASIBLE
+              ✓ FEASIBLE  —  H¹(K;ℤ) = 0
             </div>
             <p style={{ fontSize: '0.75rem', color: 'rgba(52,211,153,0.65)', margin: 0 }}>
-              Coordination is mathematically guaranteed
+              Coordination failure is mathematically impossible.
             </p>
           </div>
         </>
@@ -280,13 +304,14 @@ const ValidatorPlayground: React.FC = () => {
         {/* Header */}
         <div style={{ marginBottom: '2rem' }}>
           <p style={{ fontFamily: 'monospace', fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(156,163,175,0.4)', marginBottom: '0.55rem' }}>
-            VALIDATOR PLAYGROUND
+            TRY IT NOW
           </p>
           <h2 style={{ fontSize: 'clamp(1.4rem, 3vw, 2rem)', fontWeight: 300, letterSpacing: '-0.02em', color: 'white', margin: '0 0 0.45rem' }}>
-            Check your agent topology now
+            Paste your agent topology.<br />Find out if it can coordinate.
           </h2>
           <p style={{ fontSize: '0.875rem', color: 'rgba(156,163,175,0.55)', margin: 0 }}>
-            Paste your agent graph. Get a verdict in milliseconds.
+            No signup. No install. Real cycle detection running in your browser —
+            the same algorithm as the PyPI package, proven by 2,433 Lean 4 theorems.
           </p>
         </div>
 
@@ -307,7 +332,7 @@ const ValidatorPlayground: React.FC = () => {
           {/* Left — Monaco editor input */}
           <div>
             <p style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: 'rgba(156,163,175,0.4)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.45rem' }}>
-              Your agent topology (YAML)
+              # Define your agents and connections below<br /># or load a real framework example above
             </p>
             <div style={{ border: '1px solid rgba(255,255,255,0.09)', borderRadius: '6px', overflow: 'hidden' }}>
               <Editor
@@ -390,25 +415,35 @@ interface Product {
 const products: Product[] = [
   {
     id: 'validator',
-    name: 'Cobound Validator',
-    status: 'Available Now',
+    name: 'COBOUND Validator',
+    status: 'Free Forever',
     statusColor: 'green' as const,
     description:
-      'CLI tool and GitHub Action that checks your agent communication topology for coordination feasibility before deployment. Pass your graph. Get a verdict in milliseconds. Integrates into any CI/CD pipeline.',
-    valueProp: 'Zero configuration. Linear time. Mathematically guaranteed.',
-    tags: ['CLI', 'GitHub Action', 'Free tier', 'PyPI ✓'],
+      'Run before every deployment. If your agent graph has a cycle, the validator fails with exit code 1 and shows you exactly which connection to remove. If it passes, coordination failure is mathematically impossible — not unlikely. Impossible.',
+    valueProp: 'Your CI/CD pipeline, now with a coordination proof.',
+    tags: [
+      'O(n+m) DFS cycle detection — scales to any graph size',
+      'Maps failures to MAST taxonomy (NeurIPS 2025)',
+      'Exit code 1 on failure — blocks broken deploys automatically',
+      'GitHub Action · Python API · CLI',
+    ],
     accent: 'blue' as const,
     showCTA: true,
   },
   {
     id: 'designer',
-    name: 'Cobound Designer',
+    name: 'COBOUND Designer',
     status: 'Available Now',
     statusColor: 'green' as const,
     description:
-      'Visual topology designer for multi-agent architectures. Draw your agents, draw your communication edges, and watch the coordination feasibility indicator update in real time. One-click export to AG2, LangGraph, CrewAI, and MetaGPT.',
-    valueProp: 'Design coordination-safe systems before writing a single line of code.',
-    tags: ['Web App', 'Visual', 'Team collaboration'],
+      'Draw your agent topology. Watch the math run in real time. One click fixes the cycle and updates your config automatically. Export to LangGraph, CrewAI, or MetaGPT when you\'re done.',
+    valueProp: 'See exactly where your agent system breaks — before you build it.',
+    tags: [
+      'Live H¹ verdict updates as you type or drag',
+      '"Fix It For Me" — animated minimum cut in one click',
+      '6 real framework topologies preloaded',
+      'Export to LangGraph · CrewAI · MetaGPT · AutoGen',
+    ],
     accent: 'pink' as const,
     showCTA: true,
     ctaUrl: 'https://designer.cobound.dev',
@@ -416,15 +451,22 @@ const products: Product[] = [
   },
   {
     id: 'audit',
-    name: 'Cobound Audit',
+    name: 'COBOUND Audit',
     status: 'Available Now',
     statusColor: 'green' as const,
     description:
-      'We analyze your multi-agent system architecture, map it to its communication complex, compute H\u00B9, and deliver a formal report identifying every coordination obstruction and the exact topology changes required to eliminate them.',
-    valueProp: 'For teams that need more than a hunch about why their MAS fails.',
-    tags: ['Enterprise', 'Formal report', 'Starting at $25K'],
+      'For teams building production multi-agent systems who need mathematical guarantees before launch. We analyze your full agent topology, identify every coordination failure, and deliver a formal report with exact fixes and proofs. Not a best practice review. A theorem.',
+    valueProp: 'We review your agent architecture. You get a proof, not an opinion.',
+    tags: [
+      'Full topology analysis with formal proof artifacts',
+      'Identifies every cycle, every failure mode',
+      'Exact minimum cuts — not suggestions, proofs',
+      'Delivered as a signed formal report',
+    ],
     accent: 'blue' as const,
-    showCTA: false,
+    showCTA: true,
+    ctaUrl: 'mailto:audit@cobound.dev',
+    ctaLabel: 'Book an Audit →',
   },
 ];
 
