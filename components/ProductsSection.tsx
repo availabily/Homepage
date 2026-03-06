@@ -1,9 +1,12 @@
-// COBOUND Products Section — updated 2026-03-04
-// Changes: Validator badge → "Available Now", "Try it →" CTA, Playground section,
-//          pip install snippet, PyPI ✓ tag
-import React, { useState } from 'react';
+// COBOUND Products Section — updated 2026-03-06
+// Changes: Live cycle detection via real DFS algorithm (cycleDetection.ts),
+//          Monaco YAML editor, js-yaml parsing, real OutputPanel results
+import React, { useState, useCallback, useRef } from 'react';
+import Editor from '@monaco-editor/react';
+import yaml from 'js-yaml';
 import { FadeIn } from './FadeIn';
 import GlassCard from './GlassCard';
+import { detectCycles, buildGraph, CycleResult } from '../lib/cycleDetection';
 
 // ─── Playground scenarios ──────────────────────────────────────────────────
 
@@ -118,13 +121,43 @@ const PipSnippet: React.FC = () => {
   );
 };
 
-// ─── Output panel ─────────────────────────────────────────────────────────
+// ─── Output panel (live results) ──────────────────────────────────────────
 
-const OutputPanel: React.FC<{ scenario: (typeof SCENARIOS)[ScenarioKey]; fading: boolean }> = ({
-  scenario,
-  fading,
-}) => {
-  const isObstructed = scenario.result === 'obstructed';
+interface LiveOutputPanelProps {
+  result: CycleResult | null;
+  error: string | null;
+  fading: boolean;
+  ready: boolean;
+}
+
+const LiveOutputPanel: React.FC<LiveOutputPanelProps> = ({ result, error, fading, ready }) => {
+  if (!ready) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(156,163,175,0.35)', fontFamily: 'monospace', fontSize: '0.75rem' }}>
+        <span>Paste your agent topology and click Check Coordination →</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ borderLeft: '3px solid #f59e0b', paddingLeft: '1rem' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'monospace', fontSize: '0.78rem', fontWeight: 600, color: '#f59e0b', letterSpacing: '0.06em', marginBottom: '0.45rem' }}>
+          <span style={{ fontSize: '0.55rem' }}>●</span> PARSE ERROR
+        </div>
+        <p style={{ fontFamily: 'monospace', fontSize: '0.73rem', color: 'rgba(245,158,11,0.75)', margin: 0, wordBreak: 'break-word' }}>
+          {error}
+        </p>
+      </div>
+    );
+  }
+
+  if (!result) return null;
+
+  const isObstructed = !result.feasible;
+  const firstCycle = result.cycles[0];
+  const backEdge = result.cycleEdges[0];
+
   return (
     <div style={{ transition: 'opacity 0.22s ease', opacity: fading ? 0 : 1 }}>
       <div style={{ borderLeft: `3px solid ${isObstructed ? '#f87171' : '#34d399'}`, paddingLeft: '1rem', marginBottom: '1.25rem' }}>
@@ -135,9 +168,14 @@ const OutputPanel: React.FC<{ scenario: (typeof SCENARIOS)[ScenarioKey]; fading:
         <p style={{ fontSize: '0.82rem', color: isObstructed ? 'rgba(248,113,113,0.8)' : 'rgba(52,211,153,0.8)', margin: '0 0 0.5rem' }}>
           {isObstructed ? 'Coordination is mathematically impossible' : 'Coordination is mathematically guaranteed'}
         </p>
-        {isObstructed && scenario.cycle && (
-          <p style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: 'rgba(248,113,113,0.6)', margin: '0 0 0.35rem' }}>
-            Cycle: {scenario.cycle}
+        {isObstructed && firstCycle && (
+          <p style={{ fontFamily: 'monospace', fontSize: '0.72rem', color: 'rgba(248,113,113,0.6)', margin: '0 0 0.35rem', wordBreak: 'break-word' }}>
+            Cycle: {firstCycle.join(' → ')}
+          </p>
+        )}
+        {isObstructed && result.cycles.length > 1 && (
+          <p style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: 'rgba(248,113,113,0.45)', margin: '0 0 0.35rem' }}>
+            + {result.cycles.length - 1} more cycle{result.cycles.length > 2 ? 's' : ''} detected
           </p>
         )}
         <p style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: 'rgba(156,163,175,0.5)', margin: 0 }}>
@@ -145,14 +183,14 @@ const OutputPanel: React.FC<{ scenario: (typeof SCENARIOS)[ScenarioKey]; fading:
         </p>
       </div>
 
-      {isObstructed && scenario.fix && (
+      {isObstructed && backEdge && (
         <>
           <div style={{ background: 'rgba(248,113,113,0.05)', border: '1px solid rgba(248,113,113,0.12)', borderRadius: '6px', padding: '0.6rem 0.85rem', marginBottom: '1rem' }}>
             <p style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: 'rgba(156,163,175,0.45)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>
               Suggested fix
             </p>
             <p style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'rgba(253,186,116,0.9)', margin: 0 }}>
-              {scenario.fix}
+              Remove edge: {backEdge[0]} → {backEdge[1]}
             </p>
           </div>
           <div style={{ borderLeft: '3px solid #34d399', paddingLeft: '1rem', opacity: 0.7 }}>
@@ -172,24 +210,66 @@ const OutputPanel: React.FC<{ scenario: (typeof SCENARIOS)[ScenarioKey]; fading:
   );
 };
 
-// ─── Validator Playground ──────────────────────────────────────────────────
+// ─── Validator Playground (live DFS engine) ───────────────────────────────
+
+interface TopologyDoc {
+  agents?: Array<{ id: string }>;
+  edges?: Array<{ from: string; to: string }>;
+}
+
+/** Parse YAML and run real O(n+m) DFS cycle detection. */
+function runDetection(yamlText: string): { result: CycleResult; error: null } | { result: null; error: string } {
+  let doc: unknown;
+  try {
+    doc = yaml.load(yamlText);
+  } catch (e) {
+    return { result: null, error: e instanceof Error ? e.message : String(e) };
+  }
+  if (!doc || typeof doc !== 'object') {
+    return { result: null, error: 'Invalid YAML: expected a mapping with "agents" and "edges" keys.' };
+  }
+  const typed = doc as TopologyDoc;
+  const agentIds = (typed.agents ?? []).map((a) => String(a.id));
+  const edges = (typed.edges ?? []).map((e) => ({ from: String(e.from), to: String(e.to) }));
+  const graph = buildGraph(agentIds, edges);
+  return { result: detectCycles(graph), error: null };
+}
 
 const ValidatorPlayground: React.FC = () => {
-  const [activeKey, setActiveKey] = useState<ScenarioKey>('chatdev');
-  const [yaml, setYaml] = useState(SCENARIOS.chatdev.yaml);
+  const [activeKey, setActiveKey] = useState<ScenarioKey | null>('chatdev');
+  const [yamlText, setYamlText] = useState(SCENARIOS.chatdev.yaml);
+  const [result, setResult] = useState<CycleResult | null>(() => runDetection(SCENARIOS.chatdev.yaml).result);
+  const [parseError, setParseError] = useState<string | null>(null);
   const [fading, setFading] = useState(false);
+  const [ready, setReady] = useState(true);
+  const editorRef = useRef<string>(SCENARIOS.chatdev.yaml);
+
+  const applyDetection = useCallback((text: string) => {
+    const { result: r, error } = runDetection(text);
+    setResult(r);
+    setParseError(error);
+    setFading(false);
+  }, []);
 
   const loadScenario = (key: ScenarioKey) => {
     setFading(true);
-    setTimeout(() => { setActiveKey(key); setYaml(SCENARIOS[key].yaml); setFading(false); }, 180);
+    setActiveKey(key);
+    const text = SCENARIOS[key].yaml;
+    editorRef.current = text;
+    setYamlText(text);
+    setTimeout(() => applyDetection(text), 180);
   };
 
   const handleCheck = () => {
-    const hasCycle = yaml.includes('reviewer') && yaml.includes('researcher');
-    const isMetagpt = yaml.includes('product_manager') || yaml.includes('architect');
-    if (hasCycle) loadScenario('chatdev');
-    else if (isMetagpt) loadScenario('metagpt');
-    else loadScenario('star');
+    setFading(true);
+    setTimeout(() => applyDetection(editorRef.current), 120);
+  };
+
+  const handleEditorChange = (value: string | undefined) => {
+    const text = value ?? '';
+    editorRef.current = text;
+    setYamlText(text);
+    setActiveKey(null); // user has customised the content
   };
 
   const PIP = 'pip install cobound-validator';
@@ -224,18 +304,45 @@ const ValidatorPlayground: React.FC = () => {
 
         {/* Two-column grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
-          {/* Left — input */}
+          {/* Left — Monaco editor input */}
           <div>
             <p style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: 'rgba(156,163,175,0.4)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.45rem' }}>
               Your agent topology (YAML)
             </p>
-            <textarea
-              value={yaml}
-              onChange={(e) => setYaml(e.target.value)}
-              spellCheck={false}
-              rows={14}
-              style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: '6px', padding: '0.85rem 1rem', fontFamily: 'monospace', fontSize: '0.78rem', lineHeight: 1.65, color: 'rgba(209,213,219,0.9)', resize: 'vertical', outline: 'none', boxSizing: 'border-box' }}
-            />
+            <div style={{ border: '1px solid rgba(255,255,255,0.09)', borderRadius: '6px', overflow: 'hidden' }}>
+              <Editor
+                height="280px"
+                language="yaml"
+                theme="vs-dark"
+                value={yamlText}
+                onChange={handleEditorChange}
+                onMount={() => setReady(true)}
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 13,
+                  lineHeight: 22,
+                  scrollBeyondLastLine: false,
+                  wordWrap: 'on',
+                  overviewRulerLanes: 0,
+                  hideCursorInOverviewRuler: true,
+                  scrollbar: { vertical: 'auto', horizontal: 'auto' },
+                  padding: { top: 14, bottom: 14 },
+                  renderLineHighlight: 'none',
+                  contextmenu: false,
+                }}
+                loading={
+                  <div style={{ height: '280px', background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <textarea
+                      value={yamlText}
+                      onChange={(e) => handleEditorChange(e.target.value)}
+                      spellCheck={false}
+                      rows={14}
+                      style={{ width: '100%', height: '100%', background: 'transparent', border: 'none', padding: '0.85rem 1rem', fontFamily: 'monospace', fontSize: '0.78rem', lineHeight: 1.65, color: 'rgba(209,213,219,0.9)', resize: 'none', outline: 'none', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                }
+              />
+            </div>
             <button
               onClick={handleCheck}
               style={{ marginTop: '0.7rem', padding: '0.6rem 1.3rem', background: '#059669', border: 'none', borderRadius: '5px', color: 'white', fontWeight: 600, fontSize: '0.82rem', letterSpacing: '0.02em', cursor: 'pointer', transition: 'background 0.2s' }}
@@ -251,12 +358,12 @@ const ValidatorPlayground: React.FC = () => {
             </div>
           </div>
 
-          {/* Right — output */}
+          {/* Right — live output */}
           <div style={{ background: 'rgba(0,0,0,0.22)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '6px', padding: '1.2rem 1.3rem', minHeight: '250px' }}>
             <p style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: 'rgba(156,163,175,0.32)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '1rem' }}>
               Result
             </p>
-            <OutputPanel scenario={SCENARIOS[activeKey]} fading={fading} />
+            <LiveOutputPanel result={result} error={parseError} fading={fading} ready={ready} />
           </div>
         </div>
       </div>
