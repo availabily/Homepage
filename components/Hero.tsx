@@ -59,7 +59,7 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
             className={`text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] mb-8 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}
           >
-            Multi-agent AI systems fail because of their shape, not their intelligence.
+            Your agent pipeline will deadlock.<br />We can prove it before it does.
           </motion.p>
 
           <motion.div
@@ -68,8 +68,11 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             transition={{ duration: 1.2, delay: 0.8 }}
             className="flex flex-col items-center gap-8 pointer-events-auto"
           >
-            <span className={`text-sm font-medium tracking-wide uppercase text-xs transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              The topology of coordination
+            <p className={`text-base md:text-lg leading-relaxed max-w-2xl transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              COBOUND detects coordination failures in multi-agent systems using formal mathematics — not heuristics, not testing, not guesswork. If your agent graph has a cycle, failure is guaranteed. We show you exactly which edge to remove.
+            </p>
+            <span className={`text-xs font-medium tracking-wide transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+              2,433 Lean 4 theorems · Zero sorry statements · Free on PyPI
             </span>
 
             <div className="flex gap-4">
