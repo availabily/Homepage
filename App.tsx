@@ -5,6 +5,8 @@ import { FadeIn } from './components/FadeIn';
 import AmbientBackground from './components/AmbientBackground';
 import GlassCard from './components/GlassCard';
 import ProductsSection from './components/ProductsSection';
+import MirrorSection from './components/MirrorSection';
+import StickyNav from './components/StickyNav';
 
 const App: React.FC = () => {
   const [inverted, setInverted] = useState(false);
@@ -56,12 +58,27 @@ const App: React.FC = () => {
       {/* Ambient Background Layer (activates after hero) */}
       <AmbientBackground isActive={auroraActive} />
 
+      {/* Sticky Navigation (appears after hero scrolls away) */}
+      <StickyNav heroRef={heroRef} />
 
       {/* Hero Section */}
       <Hero ref={heroRef} theme={heroTheme} onToggleTheme={() => setInverted(v => !v)} />
 
+      {/* Mirror Section */}
+      <MirrorSection />
+
       {/* Main Content Wrapper - z-index removed to allow ambient background to show through */}
-      <main className="relative w-full max-w-screen-xl mx-auto" style={{ zIndex: 10 }}>
+      <main id="cobound-platform" className="relative w-full max-w-screen-xl mx-auto" style={{ zIndex: 10 }}>
+
+        {/* COBOUND Platform label */}
+        <div className="px-6 md:px-12 pt-12 pb-2">
+          <FadeIn>
+            <div className="flex items-center gap-4">
+              <span className="text-xs font-semibold tracking-widest uppercase text-gray-500">COBOUND Platform</span>
+              <div className="flex-1 h-px bg-gray-800" />
+            </div>
+          </FadeIn>
+        </div>
 
         {/* SECTION 1: Value Propositions */}
         <section className="section-divider" style={{ paddingTop: 'var(--section-padding-y-mobile)', paddingBottom: 'var(--section-padding-y-mobile)' }}>
