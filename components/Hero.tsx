@@ -13,8 +13,16 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
   const { theme, onToggleTheme } = props;
   const isDark = theme === 'dark';
 
+  const handleScrollToCobound = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const section = document.getElementById('cobound-platform');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section ref={ref} className={`relative h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} style={{ zIndex: 5 }}>
+    <section ref={ref} className={`relative min-h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} style={{ zIndex: 5 }}>
 
       {/* Background Gradient/Solid Fallback */}
       <div className={`absolute inset-0 z-0 transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} />
@@ -35,67 +43,94 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
       </button>
 
       {/* Text Overlay */}
-      <div className="relative z-20 container mx-auto px-6 md:px-12 pointer-events-none">
-        <div className="max-w-3xl mx-auto text-center">
+      <div className="relative z-20 container mx-auto px-6 md:px-12 py-24">
+        <div className="max-w-5xl mx-auto text-center">
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-8 flex justify-center"
+            className="mb-6 flex justify-center"
           >
             <img
               src={logo}
               alt="Cobound logo"
               width={1024}
               height={877}
-              className="h-12 md:h-16 w-auto object-contain"
+              className="h-12 md:h-14 w-auto object-contain"
               style={{ filter: isDark ? 'none' : 'invert(1)' }}
             />
           </motion.div>
 
+          {/* Universal tagline */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
-            className={`text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] mb-8 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}
+            transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+            className={`text-base md:text-lg font-light tracking-wide mb-12 transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
           >
-            Your agent pipeline will deadlock.<br />We can prove it before it does.
+            AI that understands coordination
           </motion.p>
 
+          {/* Dual-path cards */}
           <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.0, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"
+          >
+            {/* Mirror card — warm amber/rose accent */}
+            <a
+              href="https://mirror.cobound.dev"
+              className="hero-path-card hero-path-card--mirror group text-left block"
+              aria-label="Try Mirror — AI reflection partner"
+            >
+              <div className="text-3xl mb-4">🪞</div>
+              <div className="mb-1">
+                <span className={`text-xs font-semibold tracking-widest uppercase ${isDark ? 'text-amber-400/70' : 'text-amber-600/80'}`}>For Me</span>
+              </div>
+              <h2 className={`text-xl md:text-2xl font-light tracking-tight mb-3 transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'}`}>
+                See yourself clearly
+              </h2>
+              <p className={`text-sm leading-relaxed mb-6 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                AI reflection partner for personal growth. Mirror helps you understand who you are, how you show up, and who you're becoming.
+              </p>
+              <span className="hero-path-cta hero-path-cta--mirror text-sm font-medium">
+                Try Mirror →
+              </span>
+            </a>
+
+            {/* COBOUND card — blue accent */}
+            <button
+              onClick={handleScrollToCobound}
+              className="hero-path-card hero-path-card--cobound group text-left w-full"
+              aria-label="Explore COBOUND — agent coordination platform"
+            >
+              <div className="text-3xl mb-4">🔧</div>
+              <div className="mb-1">
+                <span className={`text-xs font-semibold tracking-widest uppercase ${isDark ? 'text-blue-400/70' : 'text-blue-600/80'}`}>For My Team</span>
+              </div>
+              <h2 className={`text-xl md:text-2xl font-light tracking-tight mb-3 transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'}`}>
+                Prove your agent pipeline won't deadlock
+              </h2>
+              <p className={`text-sm leading-relaxed mb-6 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Mathematically verified multi-agent coordination. Detect failures before deployment — backed by 2,433 Lean 4 theorems.
+              </p>
+              <span className="hero-path-cta hero-path-cta--cobound text-sm font-medium">
+                Explore COBOUND →
+              </span>
+            </button>
+          </motion.div>
+
+          {/* Bottom tagline */}
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.8 }}
-            className="flex flex-col items-center gap-8 pointer-events-auto"
+            transition={{ duration: 1.0, delay: 1.0 }}
+            className={`text-sm transition-colors duration-500 ${isDark ? 'text-gray-600' : 'text-gray-400'}`}
           >
-            <p className={`text-base md:text-lg leading-relaxed max-w-2xl transition-colors duration-500 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-              COBOUND detects coordination failures in multi-agent systems using formal mathematics — not heuristics, not testing, not guesswork. If your agent graph has a cycle, failure is guaranteed. We show you exactly which edge to remove.
-            </p>
-            <span className={`text-xs font-medium tracking-wide transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              2,433 Lean 4 theorems · Zero sorry statements · Free on PyPI
-            </span>
-
-            <div className="flex gap-4">
-              <a
-                href="https://github.com/coboundinc-source/cobound"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`
-                  group relative px-6 py-3
-                  border bg-transparent
-                  text-sm font-medium tracking-tight
-                  transition-all duration-300 ease-out
-                  active:scale-[0.98]
-                  ${isDark
-                    ? 'border-gray-700 text-white hover:border-gray-500 hover:bg-gray-900'
-                    : 'border-gray-300 text-black hover:border-gray-900 hover:bg-gray-50'
-                  }
-                `}
-              >
-                View the Code
-              </a>
-            </div>
-          </motion.div>
+            One company. Two ways to see more clearly.
+          </motion.p>
         </div>
       </div>
     </section>
