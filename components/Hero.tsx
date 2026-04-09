@@ -29,6 +29,14 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
     }
   };
 
+  const handleScrollToProva = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const section = document.getElementById('prova');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section ref={ref} className={`relative min-h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} style={{ zIndex: 5 }}>
 
@@ -71,16 +79,61 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
             className={`text-base md:text-lg font-light tracking-wide mb-12 transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}
           >
-            AI that understands coordination
+            The world needs AI proof. We build it.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.0, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
           >
-            {/* Mirror card — scrolls to #mirror waitlist, no external link */}
+            {/* Prova card — scrolls to #prova */}
+            <button
+              onClick={handleScrollToProva}
+              className="hero-path-card hero-path-card--prova group text-left w-full"
+              aria-label="Learn about Prova"
+            >
+              <div className="text-3xl mb-4">🛡️</div>
+              <div className="mb-1 flex items-center gap-2">
+                <span className={`text-xs font-semibold tracking-widest uppercase ${isDark ? 'text-green-400/70' : 'text-green-600/80'}`}>For Compliance</span>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full border border-green-400/25 text-green-400/80 bg-green-400/[0.06]">
+                  Coming Soon
+                </span>
+              </div>
+              <h2 className={`text-xl md:text-2xl font-light tracking-tight mb-3 transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'}`}>
+                Prove your AI reasons correctly
+              </h2>
+              <p className={`text-sm leading-relaxed mb-6 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Formally verified reasoning certificates for AI. Paste any chain-of-thought output, get a certificate of logical validity backed by 2,400+ Lean 4 theorems.
+              </p>
+              <span className="hero-path-cta hero-path-cta--prova text-sm font-medium">
+                Join waitlist →
+              </span>
+            </button>
+
+            {/* COBOUND card */}
+            <button
+              onClick={handleScrollToCobound}
+              className="hero-path-card hero-path-card--cobound group text-left w-full"
+              aria-label="Explore COBOUND"
+            >
+              <div className="text-3xl mb-4">🔧</div>
+              <div className="mb-1">
+                <span className={`text-xs font-semibold tracking-widest uppercase ${isDark ? 'text-blue-400/70' : 'text-blue-600/80'}`}>For My Team</span>
+              </div>
+              <h2 className={`text-xl md:text-2xl font-light tracking-tight mb-3 transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'}`}>
+                Prove your agent pipeline won't deadlock
+              </h2>
+              <p className={`text-sm leading-relaxed mb-6 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                Mathematically verified multi-agent coordination. Detect failures before deployment, backed by 2,433 Lean 4 theorems.
+              </p>
+              <span className="hero-path-cta hero-path-cta--cobound text-sm font-medium">
+                Explore COBOUND →
+              </span>
+            </button>
+
+            {/* Mirror card — scrolls to #mirror waitlist */}
             <button
               onClick={handleScrollToMirror}
               className="hero-path-card hero-path-card--mirror group text-left w-full"
@@ -103,27 +156,6 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
                 Join waitlist →
               </span>
             </button>
-
-            {/* COBOUND card — unchanged */}
-            <button
-              onClick={handleScrollToCobound}
-              className="hero-path-card hero-path-card--cobound group text-left w-full"
-              aria-label="Explore COBOUND"
-            >
-              <div className="text-3xl mb-4">🔧</div>
-              <div className="mb-1">
-                <span className={`text-xs font-semibold tracking-widest uppercase ${isDark ? 'text-blue-400/70' : 'text-blue-600/80'}`}>For My Team</span>
-              </div>
-              <h2 className={`text-xl md:text-2xl font-light tracking-tight mb-3 transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'}`}>
-                Prove your agent pipeline won't deadlock
-              </h2>
-              <p className={`text-sm leading-relaxed mb-6 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Mathematically verified multi-agent coordination. Detect failures before deployment — backed by 2,433 Lean 4 theorems.
-              </p>
-              <span className="hero-path-cta hero-path-cta--cobound text-sm font-medium">
-                Explore COBOUND →
-              </span>
-            </button>
           </motion.div>
 
           <motion.p
@@ -132,7 +164,7 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             transition={{ duration: 1.0, delay: 1.0 }}
             className={`text-sm transition-colors duration-500 ${isDark ? 'text-gray-600' : 'text-gray-400'}`}
           >
-            One company. Two ways to see more clearly.
+            One company. Three ways to prove it.
           </motion.p>
         </div>
       </div>
