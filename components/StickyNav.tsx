@@ -65,6 +65,13 @@ const StickyNav: React.FC<StickyNavProps> = ({ heroRef }) => {
 
             {/* Right: links */}
             <div className="flex items-center gap-6">
+              <button
+                onClick={(e) => { e.preventDefault(); document.getElementById('prova')?.scrollIntoView({ behavior: 'smooth' }); }}
+                className="sticky-nav-link text-sm font-medium tracking-wide bg-transparent border-0 cursor-pointer p-0"
+                aria-label="Navigate to Prova section"
+              >
+                Prova
+              </button>
               <a
                 href={MIRROR_URL}
                 className="sticky-nav-link text-sm font-medium tracking-wide"

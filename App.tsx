@@ -6,6 +6,7 @@ import AmbientBackground from './components/AmbientBackground';
 import GlassCard from './components/GlassCard';
 import ProductsSection from './components/ProductsSection';
 import MirrorSection from './components/MirrorSection';
+import ProvaSection from './components/ProvaSection';
 import StickyNav from './components/StickyNav';
 
 const App: React.FC = () => {
@@ -63,6 +64,9 @@ const App: React.FC = () => {
 
       {/* Hero Section */}
       <Hero ref={heroRef} theme={heroTheme} onToggleTheme={() => setInverted(v => !v)} />
+
+      {/* Prova Section */}
+      <ProvaSection />
 
       {/* Mirror Section */}
       <MirrorSection />
@@ -165,7 +169,7 @@ const App: React.FC = () => {
                       <GlassCard
                         className="p-6 h-full"
                         hover={true}
-                        trimAccent={item.accent as 'blue' | 'pink'}
+                        trimAccent={item.accent as 'blue' | 'pink' | 'green'}
                       >
                         <div className="flex flex-col gap-4 h-full">
                           <div className={`w-8 h-px transition-colors duration-500 ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`}></div>
