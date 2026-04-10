@@ -1,81 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GlassCard from './GlassCard';
 import { FadeIn } from './FadeIn';
-import { motion } from 'framer-motion';
-
-// ── Waitlist form (green-styled, same pattern as Mirror) ────────────────────
-
-const ProvaWaitlistForm: React.FC<{ size?: 'sm' | 'lg' }> = ({ size = 'lg' }) => {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setLoading(true);
-
-    try {
-      await fetch('https://formspree.io/f/myknnnjq', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ email, source: 'cobound-prova-section' }),
-      });
-    } catch {
-      // Non-blocking
-    }
-
-    setLoading(false);
-    setSubmitted(true);
-  };
-
-  if (submitted) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center gap-3"
-      >
-        <span className="text-lg">✓</span>
-        <span className={`${size === 'lg' ? 'text-base' : 'text-sm'} text-green-300`}>
-          You're on the list. We'll notify you when Prova launches.
-        </span>
-      </motion.div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className={`flex ${size === 'lg' ? 'flex-col sm:flex-row' : 'flex-row'} gap-3`}>
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="your@email.com"
-        className={`
-          ${size === 'lg' ? 'flex-1 px-4 py-3 text-sm' : 'flex-1 px-3 py-2 text-xs'}
-          bg-transparent border border-white/10 rounded-lg text-white
-          placeholder-white/30 focus:outline-none focus:border-green-400/40
-          transition-colors duration-300
-        `}
-      />
-      <button
-        type="submit"
-        disabled={loading}
-        className={`
-          ${size === 'lg' ? 'px-6 py-3 text-sm' : 'px-4 py-2 text-xs'}
-          font-medium tracking-wide whitespace-nowrap
-          border border-green-400/30 text-green-300
-          hover:border-green-400/60 hover:bg-green-400/5
-          transition-all duration-300 rounded-lg
-          disabled:opacity-50
-        `}
-      >
-        {loading ? 'Joining...' : 'Join waitlist'}
-      </button>
-    </form>
-  );
-};
 
 // ── Feature data ────────────────────────────────────────────────────────────
 
@@ -154,7 +79,7 @@ const ProvaSection: React.FC = () => {
               </h2>
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-green-400/25 bg-green-400/8 text-green-400 text-xs font-semibold tracking-widest uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                Coming Soon
+                Live Now
               </span>
             </div>
           </div>
@@ -171,15 +96,19 @@ const ProvaSection: React.FC = () => {
               Not a probability score. A mathematical proof. Backed by 2,400+ Lean 4 theorems and Cech cohomology.
             </p>
 
-            {/* Early access callout */}
             <div className="border border-green-400/20 rounded-xl p-5 bg-green-400/[0.03]">
               <p className="text-sm font-medium text-green-300/90 mb-1">
-                Prova is launching soon.
+                Prova is live.
               </p>
               <p className="text-sm text-gray-400 mb-4">
-                We're building the first formally verified reasoning engine for AI. Leave your email and we'll notify you when Prova opens for early access.
+                Paste any AI reasoning chain and get your first certificate in seconds. No account required.
               </p>
-              <ProvaWaitlistForm size="lg" />
+              <a
+                href="https://prova.cobound.dev"
+                className="inline-block px-6 py-3 text-sm font-medium tracking-wide whitespace-nowrap border border-green-400/30 text-green-300 hover:border-green-400/60 hover:bg-green-400/5 transition-all duration-300 rounded-lg"
+              >
+                Open Prova →
+              </a>
             </div>
           </GlassCard>
         </FadeIn>
@@ -214,6 +143,31 @@ const ProvaSection: React.FC = () => {
           ))}
         </div>
 
+        {/* Live certificate preview */}
+        <FadeIn delay={0.15}>
+          <GlassCard className="p-6 md:p-8 mb-12" trimAccent="green">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <p className="text-xs font-semibold tracking-widest uppercase text-gray-500 mb-1">Certificate</p>
+                <p className="text-lg font-mono font-bold text-white">PRV-2026-58D8</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-gray-500 mb-1">Verdict</p>
+                <p className="text-lg font-bold text-green-400">VALID</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-white/10 pt-4 mb-4">
+              <div><p className="text-xs text-gray-500">confidence</p><p className="text-sm text-white">100/100</p></div>
+              <div><p className="text-xs text-gray-500">prova</p><p className="text-sm text-white">v1.0.0</p></div>
+              <div><p className="text-xs text-gray-500">validator</p><p className="text-sm text-white">v0.1.0</p></div>
+              <div><p className="text-xs text-gray-500">theorems</p><p className="text-sm text-white">2,400+</p></div>
+            </div>
+            <a href="https://prova.cobound.dev/certificate/PRV-2026-58D8" target="_blank" rel="noopener noreferrer" className="text-sm text-green-400 hover:text-green-300 transition-colors">
+              View full certificate at prova.cobound.dev →
+            </a>
+          </GlassCard>
+        </FadeIn>
+
         {/* How it works */}
         <FadeIn delay={0.1}>
           <div className="mb-4">
@@ -236,9 +190,14 @@ const ProvaSection: React.FC = () => {
         <FadeIn delay={0.3}>
           <div className="text-center">
             <GlassCard className="inline-block px-10 py-8 md:py-10 w-full max-w-lg">
-              <p className="text-base font-light text-white mb-1">Get early access to Prova</p>
-              <p className="text-sm text-gray-500 mb-6">We'll email you when Prova launches.</p>
-              <ProvaWaitlistForm size="lg" />
+              <p className="text-base font-light text-white mb-1">Try Prova now</p>
+              <p className="text-sm text-gray-500 mb-6">Get your first certificate in seconds. No account required.</p>
+              <a
+                href="https://prova.cobound.dev"
+                className="inline-block px-8 py-3 text-sm font-medium tracking-wide border border-green-400/30 text-green-300 hover:border-green-400/60 hover:bg-green-400/5 transition-all duration-300 rounded-lg"
+              >
+                Open Prova →
+              </a>
             </GlassCard>
           </div>
         </FadeIn>

@@ -37,10 +37,10 @@ const Footer: React.FC<FooterProps> = ({ theme }) => {
         <div className={`container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs font-medium tracking-tight transition-colors duration-500 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
           <div className="flex items-center gap-6 flex-wrap">
             <span className={`font-semibold ${isDark ? 'text-white' : 'text-black'}`}>COBOUND</span>
-            <a href="https://mirror.cobound.dev" className="hover:underline">Mirror</a>
+            <a href="https://prova.cobound.dev" className="hover:underline">Prova</a>
             <a href="mailto:coboundinc@gmail.com" className="hover:underline">coboundinc@gmail.com</a>
             <a href="https://github.com/coboundinc-source/cobound" target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
-            <a href="https://mirror.cobound.dev/privacy" className="hover:underline">Privacy</a>
+            <a href="https://prova.cobound.dev/docs/privacy" className="hover:underline">Privacy</a>
           </div>
           <div className="flex items-center gap-5">
             <a href="https://www.instagram.com/cobound.ai/" target="_blank" rel="noopener noreferrer" className={iconClass} aria-label="Instagram">

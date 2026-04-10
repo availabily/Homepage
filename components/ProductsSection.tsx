@@ -414,25 +414,6 @@ interface Product {
 
 const products: Product[] = [
   {
-    id: 'prova',
-    name: 'Prova',
-    status: 'Coming Soon',
-    statusColor: 'muted' as const,
-    description:
-      'The first formally verified reasoning engine for AI. Paste any chain-of-thought output, get a certificate proving the logic is sound. Built on the same Cech cohomology that powers the Validator.',
-    valueProp: 'Your AI decided something. Prova proves the reasoning was valid.',
-    tags: [
-      'Formal certificates of logical validity',
-      'EU AI Act / FDA / SEC compliance ready',
-      'Works with any AI model',
-      'One API call integration',
-    ],
-    accent: 'green' as const,
-    showCTA: true,
-    ctaUrl: '#prova',
-    ctaLabel: 'Join Waitlist',
-  },
-  {
     id: 'validator',
     name: 'COBOUND Validator',
     status: 'Free Forever',

@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../IMG_4402.jpeg';
 
-const MIRROR_URL = 'https://mirror.cobound.dev';
-
 interface StickyNavProps {
   heroRef: React.RefObject<HTMLElement | null>;
 }
@@ -65,18 +63,11 @@ const StickyNav: React.FC<StickyNavProps> = ({ heroRef }) => {
 
             {/* Right: links */}
             <div className="flex items-center gap-6">
-              <button
-                onClick={(e) => { e.preventDefault(); document.getElementById('prova')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="sticky-nav-link text-sm font-medium tracking-wide bg-transparent border-0 cursor-pointer p-0"
-                aria-label="Navigate to Prova section"
-              >
-                Prova
-              </button>
               <a
-                href={MIRROR_URL}
+                href="https://prova.cobound.dev"
                 className="sticky-nav-link text-sm font-medium tracking-wide"
               >
-                Mirror
+                Prova
               </a>
               <button
                 onClick={handleScrollToCobound}

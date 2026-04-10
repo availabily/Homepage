@@ -5,7 +5,6 @@ import { FadeIn } from './components/FadeIn';
 import AmbientBackground from './components/AmbientBackground';
 import GlassCard from './components/GlassCard';
 import ProductsSection from './components/ProductsSection';
-import MirrorSection from './components/MirrorSection';
 import ProvaSection from './components/ProvaSection';
 import StickyNav from './components/StickyNav';
 
@@ -67,9 +66,6 @@ const App: React.FC = () => {
 
       {/* Prova Section */}
       <ProvaSection />
-
-      {/* Mirror Section */}
-      <MirrorSection />
 
       {/* Main Content Wrapper - z-index removed to allow ambient background to show through */}
       <main id="cobound-platform" className="relative w-full max-w-screen-xl mx-auto" style={{ zIndex: 10 }}>
