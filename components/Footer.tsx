@@ -39,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({ theme }) => {
             <span className={`font-semibold ${isDark ? 'text-white' : 'text-black'}`}>COBOUND</span>
             <a href="https://prova.cobound.dev" className="hover:underline">Prova</a>
             <a href="mailto:coboundinc@gmail.com" className="hover:underline">coboundinc@gmail.com</a>
-            <a href="https://github.com/coboundinc-source/cobound" target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
+            <a href="https://prova.cobound.dev/docs" className="hover:underline">Docs</a>
             <a href="https://prova.cobound.dev/docs/privacy" className="hover:underline">Privacy</a>
           </div>
           <div className="flex items-center gap-5">

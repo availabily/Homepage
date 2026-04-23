@@ -234,46 +234,25 @@ const App: React.FC = () => {
 
               <div className="flex flex-col items-center gap-4 w-full">
                 <FadeIn delay={0.2}>
-                  <div className="flex flex-col items-center gap-4">
-                    <a
-                      href="/COBOUND-arXiv-Corrected.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`
-                        px-8 py-3
-                        text-sm font-medium tracking-wide
-                        border
-                        transition-all duration-300
-                        min-w-[200px]
-                        text-center
-                        ${isDark
-                          ? 'border-white text-white hover:bg-white hover:text-black'
-                          : 'border-black text-black hover:bg-black hover:text-white'
-                        }
-                      `}
-                    >
-                      Read the Paper
-                    </a>
-                    <a
-                      href="https://github.com/coboundinc-source/cobound"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`
-                        px-8 py-3
-                        text-sm font-medium tracking-wide
-                        border
-                        transition-all duration-300
-                        min-w-[200px]
-                        text-center
-                        ${isDark
-                          ? 'border-white text-white hover:bg-white hover:text-black'
-                          : 'border-black text-black hover:bg-black hover:text-white'
-                        }
-                      `}
-                    >
-                      View the Code
-                    </a>
-                  </div>
+                  <a
+                    href="/COBOUND-arXiv-Corrected.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`
+                      px-8 py-3
+                      text-sm font-medium tracking-wide
+                      border
+                      transition-all duration-300
+                      min-w-[200px]
+                      text-center
+                      ${isDark
+                        ? 'border-white text-white hover:bg-white hover:text-black'
+                        : 'border-black text-black hover:bg-black hover:text-white'
+                      }
+                    `}
+                  >
+                    Read the Paper
+                  </a>
                 </FadeIn>
               </div>
             </GlassCard>

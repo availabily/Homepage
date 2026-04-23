@@ -202,9 +202,6 @@ const LiveOutputPanel: React.FC<LiveOutputPanelProps> = ({ result, error, fading
         <p style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: 'rgba(156,163,175,0.5)', margin: '0 0 0.15rem' }}>
           Formal proof: {isObstructed ? 'h1_trivial_iff_oneConnected' : 'tree_authority_h1_trivial'}
         </p>
-        <p style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: 'rgba(156,163,175,0.4)', margin: 0 }}>
-          github.com/coboundinc/cobound
-        </p>
       </div>
 
       {isObstructed && backEdge && (
