@@ -416,10 +416,10 @@ const products: Product[] = [
     status: 'Free Forever',
     statusColor: 'green' as const,
     description:
-      'Run before every deployment. If your agent graph has a cycle, the validator fails with exit code 1 and shows you exactly which connection to remove. If it passes, coordination failure is mathematically impossible — not unlikely. Impossible.',
+      'Run before every deployment. If your agent graph has a cycle, the validator fails with exit code 1 and shows you exactly which connection to remove. If it passes, coordination failure is mathematically impossible. Not unlikely. Impossible.',
     valueProp: 'Your CI/CD pipeline, now with a coordination proof.',
     tags: [
-      'O(n+m) DFS cycle detection — scales to any graph size',
+      'O(n+m) DFS cycle detection, scales to any graph size',
       'Maps failures to MAST taxonomy (NeurIPS 2025)',
       'Exit code 1 on failure — blocks broken deploys automatically',
       'GitHub Action · Python API · CLI',
@@ -434,7 +434,7 @@ const products: Product[] = [
     statusColor: 'green' as const,
     description:
       'Draw your agent topology. Watch the math run in real time. One click fixes the cycle and updates your config automatically. Export to LangGraph, CrewAI, or MetaGPT when you\'re done.',
-    valueProp: 'See exactly where your agent system breaks — before you build it.',
+    valueProp: 'See exactly where your agent system breaks before you build it.',
     tags: [
       'Live H¹ verdict updates as you type or drag',
       '"Fix It For Me" — animated minimum cut in one click',

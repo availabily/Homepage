@@ -21,7 +21,6 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
     }
   };
 
-
   return (
     <section ref={ref} className={`relative min-h-screen w-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`} style={{ zIndex: 5 }}>
 
@@ -40,7 +39,7 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
       </button>
 
       <div className="relative z-20 container mx-auto px-6 md:px-12 py-24">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-2xl mx-auto text-center">
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -67,68 +66,65 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
             The world needs proof. We build it.
           </motion.p>
 
+          {/* Primary Prova card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.0, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"
+            className="mb-8"
           >
-            {/* Prova card -- links to live product */}
             <a
               href="https://prova.cobound.dev"
               className="hero-path-card hero-path-card--prova group text-left w-full block"
               aria-label="Try Prova"
             >
-              <div className="text-3xl mb-4">🛡️</div>
-              <div className="mb-1 flex items-center gap-2">
-                <span className={`text-xs font-semibold tracking-widest uppercase ${isDark ? 'text-green-400/70' : 'text-green-600/80'}`}>For Compliance</span>
+              <div className="mb-2 flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full border border-green-400/25 text-green-400/80 bg-green-400/[0.06]">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                   Live
                 </span>
               </div>
-              <h2 className={`text-xl md:text-2xl font-light tracking-tight mb-3 transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'}`}>
+
+              <h2 className={`text-2xl md:text-3xl font-light tracking-tight mb-3 transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'}`}>
                 Prove your AI reasons correctly
               </h2>
+
               <p className={`text-sm leading-relaxed mb-6 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Formally verified reasoning certificates for AI. Paste any chain-of-thought, get a certificate of logical validity backed by 2,400+ Lean 4 theorems.
+                Formally verified reasoning certificates for AI. Paste any chain-of-thought, get a certificate of logical validity. No account required.
               </p>
+
+              <div className={`flex items-center gap-6 mb-6 text-xs font-mono transition-colors duration-300 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                <span>2,400+ Lean 4 theorems</span>
+                <span className={`w-px h-3 ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`} />
+                <span>Zero axioms</span>
+              </div>
+
               <span className="hero-path-cta hero-path-cta--prova text-sm font-medium">
                 Try Prova →
               </span>
-            </a>
 
-            {/* COBOUND card */}
-            <button
-              onClick={handleScrollToCobound}
-              className="hero-path-card hero-path-card--cobound group text-left w-full"
-              aria-label="Explore COBOUND"
-            >
-              <div className="text-3xl mb-4">🔧</div>
-              <div className="mb-1">
-                <span className={`text-xs font-semibold tracking-widest uppercase ${isDark ? 'text-blue-400/70' : 'text-blue-600/80'}`}>For My Team</span>
-              </div>
-              <h2 className={`text-xl md:text-2xl font-light tracking-tight mb-3 transition-colors duration-300 ${isDark ? 'text-white' : 'text-black'}`}>
-                Prove your agent pipeline won't deadlock
-              </h2>
-              <p className={`text-sm leading-relaxed mb-6 transition-colors duration-300 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                Mathematically verified multi-agent coordination. Detect failures before deployment, backed by 2,433 Lean 4 theorems.
+              <p className={`mt-4 text-xs transition-colors duration-300 ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
+                EU AI Act deadline: August 2026. Are you ready?
               </p>
-              <span className="hero-path-cta hero-path-cta--cobound text-sm font-medium">
-                Explore COBOUND →
-              </span>
-            </button>
-
+            </a>
           </motion.div>
 
+          {/* Secondary COBOUND link */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.0, delay: 1.0 }}
             className={`text-sm transition-colors duration-500 ${isDark ? 'text-gray-600' : 'text-gray-400'}`}
           >
-            One company. Two ways to prove it.
+            Also:{' '}
+            <button
+              onClick={handleScrollToCobound}
+              className={`underline underline-offset-4 bg-transparent border-0 cursor-pointer p-0 text-sm transition-colors duration-300 ${isDark ? 'text-gray-500 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              COBOUND multi-agent coordination tools
+            </button>
           </motion.p>
+
         </div>
       </div>
     </section>

@@ -228,7 +228,7 @@ const App: React.FC = () => {
             <GlassCard className="w-full max-w-xl p-8 md:p-12">
               <FadeIn>
                 <h3 className={`text-xl font-medium tracking-tight mb-8 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
-                  Explore the proof.
+                  Formally verified. Peer-reviewed. Open science.
                 </h3>
               </FadeIn>
 
@@ -253,6 +253,11 @@ const App: React.FC = () => {
                   >
                     Read the Paper
                   </a>
+                </FadeIn>
+                <FadeIn delay={0.35}>
+                  <p className={`text-xs tracking-wide transition-colors duration-500 ${isDark ? 'text-white/40' : 'text-black/40'}`}>
+                    12-page paper submitted to cs.AI with 2,400+ formally verified Lean 4 theorems
+                  </p>
                 </FadeIn>
               </div>
             </GlassCard>

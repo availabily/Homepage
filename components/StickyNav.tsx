@@ -76,6 +76,9 @@ const StickyNav: React.FC<StickyNavProps> = ({ heroRef }) => {
               >
                 COBOUND
               </button>
+              <span className="text-xs text-amber-400/70 font-mono" title="EU AI Act GPAI compliance deadline">
+                EU AI Act: {Math.ceil((new Date('2026-08-01').getTime() - Date.now()) / 86400000)} days
+              </span>
             </div>
           </div>
         </motion.nav>
