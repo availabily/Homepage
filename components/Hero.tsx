@@ -104,7 +104,7 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
               </span>
 
               <p className={`mt-4 text-xs transition-colors duration-300 ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
-                EU AI Act deadline: August 2026. Are you ready?
+                Built for AI Act, FDA, and regulated-industry audit requirements phasing in now.
               </p>
             </a>
           </motion.div>

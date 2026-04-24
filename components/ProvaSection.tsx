@@ -24,7 +24,7 @@ const features: FeatureItem[] = [
   {
     emoji: '🛡️',
     title: 'Certify',
-    description: 'Every certificate is permanent, tamper-evident, and independently verifiable. Built for EU AI Act, FDA, and SEC compliance.',
+    description: 'Every certificate is permanent, tamper-evident, and independently verifiable. Used as audit evidence across AI Act, FDA, and financial services contexts.',
   },
   {
     emoji: '🔗',
