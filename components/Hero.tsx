@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import ParticleSystem from './ParticleSystem';
 import { motion } from 'framer-motion';
 import logo from '../IMG_4402.jpeg';
+import KineticHeading from './manifold/KineticHeading';
 
 interface HeroProps {
   theme: 'light' | 'dark';
@@ -56,6 +57,11 @@ const Hero = forwardRef<HTMLElement, HeroProps>((props, ref) => {
               style={{ filter: isDark ? 'none' : 'invert(1)' }}
             />
           </motion.div>
+          {import.meta.env.VITE_MANIFOLD !== 'off' && (
+            <KineticHeading className="block text-center text-xs font-mono tracking-[0.3em] uppercase text-white/50 mt-6">
+              the topology of coordination
+            </KineticHeading>
+          )}
 
           <motion.p
             initial={{ opacity: 0 }}

@@ -1,12 +1,13 @@
 // COBOUND Products Section — updated 2026-03-06
 // Changes: Live cycle detection via real DFS algorithm (cycleDetection.ts),
 //          Monaco YAML editor, js-yaml parsing, real OutputPanel results
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import yaml from 'js-yaml';
 import { FadeIn } from './FadeIn';
 import GlassCard from './GlassCard';
 import { detectCycles, buildGraph, CycleResult } from '../lib/cycleDetection';
+import { useCoherence } from './manifold/CoherenceContext';
 
 // ─── Playground scenarios ──────────────────────────────────────────────────
 
@@ -260,6 +261,13 @@ const ValidatorPlayground: React.FC = () => {
   const [activeKey, setActiveKey] = useState<ScenarioKey | null>('chatdev');
   const [yamlText, setYamlText] = useState(SCENARIOS.chatdev.yaml);
   const [result, setResult] = useState<CycleResult | null>(() => runDetection(SCENARIOS.chatdev.yaml).result);
+  const { setTargetCoherence } = useCoherence();
+  useEffect(() => {
+    if (result === null) return;
+    setTargetCoherence(result.feasible ? 1.0 : 0.0);
+    const t = setTimeout(() => setTargetCoherence(0.3), 1500);
+    return () => clearTimeout(t);
+  }, [result, setTargetCoherence]);
   const [parseError, setParseError] = useState<string | null>(null);
   const [fading, setFading] = useState(false);
   const [ready, setReady] = useState(true);
@@ -487,7 +495,7 @@ const ProductsSection: React.FC = () => {
   };
 
   return (
-    <>
+    <div data-products-section="true">
       {/* Products Section Header */}
       <section
         className="section-divider"
@@ -621,7 +629,7 @@ const ProductsSection: React.FC = () => {
           </GlassCard>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

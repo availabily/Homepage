@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 interface CoherenceContextValue {
   coherence: number;
@@ -18,18 +18,18 @@ export const CoherenceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const targetRef = useRef(targetCoherence);
   const velocityRef = useRef(0);
 
-  const setCoherence = (value: number) => {
+  const setCoherence = useCallback((value: number) => {
     const next = clamp01(value);
     coherenceRef.current = next;
     velocityRef.current = 0;
     setCoherenceState(next);
-  };
+  }, []);
 
-  const setTargetCoherence = (value: number) => {
+  const setTargetCoherence = useCallback((value: number) => {
     const next = clamp01(value);
     targetRef.current = next;
     setTargetCoherenceState(next);
-  };
+  }, []);
 
   useEffect(() => {
     let frame = 0;
@@ -56,7 +56,7 @@ export const CoherenceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const value = useMemo(
     () => ({ coherence, setCoherence, targetCoherence, setTargetCoherence }),
-    [coherence, targetCoherence]
+    [coherence, setCoherence, targetCoherence, setTargetCoherence]
   );
 
   return <CoherenceContext.Provider value={value}>{children}</CoherenceContext.Provider>;

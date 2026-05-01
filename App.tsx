@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import { FadeIn } from './components/FadeIn';
@@ -7,8 +7,14 @@ import GlassCard from './components/GlassCard';
 import ProductsSection from './components/ProductsSection';
 import ProvaSection from './components/ProvaSection';
 import StickyNav from './components/StickyNav';
+import { CoherenceProvider } from './components/manifold/CoherenceContext';
+import ProofTicker from './components/manifold/ProofTicker';
+import { useScrollCoherence } from './components/manifold/useScrollCoherence';
 
-const App: React.FC = () => {
+const LazyManifold = lazy(() => import('./components/manifold/Manifold'));
+const manifoldEnabled = import.meta.env.VITE_MANIFOLD !== 'off';
+
+const AppInner: React.FC = () => {
   const [inverted, setInverted] = useState(false);
   const heroTheme: 'light' | 'dark' = inverted ? 'light' : 'dark';
   const [auroraActive, setAuroraActive] = useState(false);
@@ -51,9 +57,15 @@ const App: React.FC = () => {
     };
   }, []);
 
+  useScrollCoherence();
 
   return (
     <div className="min-h-screen font-sans transition-colors duration-500 bg-black text-white selection:bg-gray-800">
+      {manifoldEnabled && (
+        <Suspense fallback={null}>
+          <LazyManifold />
+        </Suspense>
+      )}
 
       {/* Ambient Background Layer (activates after hero) */}
       <AmbientBackground isActive={auroraActive} />
@@ -63,6 +75,8 @@ const App: React.FC = () => {
 
       {/* Hero Section */}
       <Hero ref={heroRef} theme={heroTheme} onToggleTheme={() => setInverted(v => !v)} />
+
+      {manifoldEnabled && <ProofTicker />}
 
       {/* Prova Section */}
       <ProvaSection />
@@ -273,5 +287,11 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+const App: React.FC = () => (
+  <CoherenceProvider>
+    <AppInner />
+  </CoherenceProvider>
+);
 
 export default App;
